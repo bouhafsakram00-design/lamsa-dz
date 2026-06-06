@@ -28,6 +28,11 @@ services:
     #    re-add the disk block (see render-with-disk.yaml for the snippet).
 
     envVars:
+             # Pin Node to v20 — newer versions (e.g. 26) fail to build better-sqlite3
+      - key: NODE_VERSION
+        value: "20.18.0"
+      - key: NODE_ENV
+        value: production
       - key: NODE_ENV
         value: production
       - key: PORT
