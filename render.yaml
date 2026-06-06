@@ -33,9 +33,7 @@ services:
         value: "20.18.0"
       - key: NODE_ENV
         value: production
-      - key: NODE_ENV
-        value: production
-      - key: PORT
+        - key: PORT
         value: 3000
       # (Free tier: no disk — DB & uploads use the app's default local paths
       #  and reset on each deploy. Re-seeded automatically on every build.)
