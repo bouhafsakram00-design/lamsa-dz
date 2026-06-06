@@ -1,0 +1,47 @@
+{
+  "name": "lamsadz",
+  "version": "1.0.0",
+  "description": "LamsaDZ — Production-ready electronics & tech e-commerce store for Algeria (Node.js + Express + SQLite/Postgres).",
+  "main": "src/server.js",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "migrate": "node scripts/migrate.js",
+    "seed": "node scripts/seed.js",
+    "setup": "node scripts/migrate.js && node scripts/seed.js",
+    "test": "node --test tests/"
+  },
+  "keywords": [
+    "ecommerce",
+    "algeria",
+    "electronics",
+    "whatsapp",
+    "express"
+  ],
+  "author": "Akram A. Bouhafs",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "better-sqlite3": "^11.3.0",
+    "compression": "^1.7.4",
+    "connect-sqlite3": "^0.9.13",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "express-rate-limit": "^7.4.0",
+    "express-session": "^1.18.0",
+    "express-validator": "^7.2.0",
+    "helmet": "^7.1.0",
+    "multer": "^2.1.1",
+    "sharp": "^0.33.5",
+    "winston": "^3.14.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}

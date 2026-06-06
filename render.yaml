@@ -1,0 +1,59 @@
+# ============================================================
+#  LamsaDZ — Render.com deployment blueprint
+#  Render reads this file automatically and sets everything up.
+#  Docs: https://render.com/docs/blueprint-spec
+# ============================================================
+services:
+  - type: web
+    name: lamsadz
+    runtime: node
+    plan: free                # change to "starter" ($7/mo) to keep it always-on
+    region: frankfurt         # closest Render region to Algeria
+    branch: main
+    # Install dependencies and prepare the database on every deploy
+    buildCommand: npm install && npm run migrate && npm run seed
+    startCommand: npm start
+    healthCheckPath: /robots.txt
+
+    # A persistent disk keeps your database + uploaded product images
+    # safe across restarts and re-deploys. Without this, data would reset!
+    disk:
+      name: lamsadz-data
+      mountPath: /var/data
+      sizeGB: 1
+
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      # Store the database + uploads on the persistent disk
+      - key: SQLITE_PATH
+        value: /var/data/lamsadz.sqlite
+      # Store uploaded product images on the persistent disk too
+      - key: UPLOADS_DIR
+        value: /var/data/uploads
+      # Render auto-generates a strong random session secret for you
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: SECURE_COOKIES
+        value: "true"
+      # 👇 EDIT THESE in the Render dashboard after first deploy (or here before)
+      - key: SITE_URL
+        value: https://lamsadz.onrender.com
+      - key: ADMIN_EMAIL
+        value: admin@lamsadz.dz
+      - key: ADMIN_PASSWORD
+        sync: false           # you'll type this secretly in the dashboard
+      - key: ADMIN_NAME
+        value: Akram
+      - key: WHATSAPP_NUMBER
+        value: "213796472662"
+      - key: STORE_NAME
+        value: LamsaDZ
+      - key: STORE_ADDRESS
+        value: Hai 119 Logements, Tissemsilt, Algeria
+      - key: STORE_PHONE
+        value: "+213 796 472 662"
+      - key: GA_MEASUREMENT_ID
+        value: ""
