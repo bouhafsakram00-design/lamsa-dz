@@ -1,0 +1,146 @@
+/* ============================================================
+   LamsaDZ — Premium Enhancements (elegant animations & polish)
+   Layered on top of theme.css + app.css. Safe & performant.
+   ============================================================ */
+
+/* ---- Respect users who prefer no motion (accessibility) ---- */
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
+
+/* ============ 1. SMOOTH PAGE ENTRANCE ============ */
+body { animation: pageFade .5s ease both; }
+@keyframes pageFade { from { opacity: 0; } to { opacity: 1; } }
+
+/* ============ 2. ELEGANT BUTTON SHINE (gold buttons) ============ */
+.btn-gold, .btn-brand { position: relative; overflow: hidden; }
+.btn-gold::after, .btn-brand::after {
+  content: ""; position: absolute; top: 0; left: -120%; width: 60%; height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,.55), transparent);
+  transform: skewX(-20deg); transition: left .6s ease;
+}
+.btn-gold:hover::after, .btn-brand:hover::after { left: 130%; }
+
+/* Subtle lift on all buttons */
+.btn { transition: transform .2s cubic-bezier(.34,1.56,.64,1), box-shadow .2s, filter .2s; }
+.btn:hover { transform: translateY(-2px); }
+.btn:active { transform: translateY(0) scale(.98); }
+
+/* ============ 3. PRODUCT CARD: premium hover ============ */
+.product-card {
+  transition: transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s, border-color .35s;
+  will-change: transform;
+}
+.product-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 22px 48px rgba(10,10,15,.14);
+  border-color: var(--gold);
+}
+.product-card:hover .product-media img { transform: scale(1.08); }
+.product-media img { transition: transform .55s cubic-bezier(.22,1,.36,1); }
+
+/* Shimmer sweep across card image on hover */
+.product-media::after {
+  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,.28) 50%, transparent 70%);
+  transform: translateX(-100%); transition: transform .7s ease;
+}
+.product-card:hover .product-media::after { transform: translateX(100%); }
+
+/* Wishlist heart pop */
+.wish-btn { transition: transform .25s cubic-bezier(.34,1.56,.64,1), color .2s, background .2s; }
+.wish-btn:hover { transform: scale(1.18); }
+.wish-btn.active { animation: heartPop .4s cubic-bezier(.34,1.56,.64,1); }
+@keyframes heartPop { 0% { transform: scale(1); } 50% { transform: scale(1.4); } 100% { transform: scale(1); } }
+
+/* ============ 4. CATEGORY CARDS: floating icons ============ */
+.cat-card { transition: transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s, border-color .35s; }
+.cat-card:hover { transform: translateY(-6px); }
+.cat-card:hover .cat-icon { transform: rotate(-6deg) scale(1.1); }
+.cat-icon { transition: transform .4s cubic-bezier(.34,1.56,.64,1); }
+
+/* ============ 5. SCROLL-REVEAL (upgraded easing) ============ */
+.reveal, .reveal-left, .reveal-right, .reveal-scale {
+  transition: opacity .8s cubic-bezier(.22,1,.36,1), transform .8s cubic-bezier(.22,1,.36,1);
+}
+
+/* ============ 6. HERO: soft floating glow ============ */
+.hero-card { animation: floatY 5s ease-in-out infinite; }
+@keyframes floatY { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+.hero-pill .dot { animation: pulseDot 1.8s ease-in-out infinite; }
+@keyframes pulseDot { 0%,100% { box-shadow: 0 0 0 0 rgba(37,211,102,.5); } 50% { box-shadow: 0 0 0 8px rgba(37,211,102,0); } }
+
+/* Gradient text shimmer on hero H1 */
+.hero-text h1 { background-size: 200% auto; }
+
+/* ============ 7. SECTION HEADINGS: animated gold line ============ */
+.gold-line { position: relative; overflow: hidden; }
+.gold-line::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, #fff8, transparent);
+  transform: translateX(-100%); animation: lineSweep 3s ease-in-out infinite;
+}
+@keyframes lineSweep { 0% { transform: translateX(-100%);} 60%,100% { transform: translateX(200%);} }
+
+/* ============ 8. FAQ smooth open ============ */
+.faq-item { transition: box-shadow .25s, border-color .25s; }
+.faq-item[open] { box-shadow: var(--shadow); border-color: var(--gold); }
+.faq-answer { animation: faqOpen .35s ease both; }
+@keyframes faqOpen { from { opacity: 0; transform: translateY(-6px);} to { opacity: 1; transform: translateY(0);} }
+
+/* ============ 9. TESTIMONIAL cards ============ */
+.testi-card { transition: transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s; }
+.testi-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+.testi-card .stars { letter-spacing: 3px; }
+
+/* ============ 10. WHATSAPP float: gentle breathe + tooltip ============ */
+.wa-float { transition: transform .3s cubic-bezier(.34,1.56,.64,1); }
+.wa-float:hover { transform: scale(1.12) rotate(6deg); }
+
+/* ============ 11. LINKS underline slide ============ */
+.nav-links a { position: relative; }
+.nav-links a::after {
+  content: ""; position: absolute; left: 0; bottom: -4px; height: 2px; width: 0;
+  background: var(--gold); transition: width .3s ease;
+}
+.nav-links a:hover::after { width: 100%; }
+
+/* ============ 12. IMAGE ZOOM on product detail ============ */
+.pd-main { overflow: hidden; cursor: zoom-in; }
+.pd-main img { transition: transform .4s ease; }
+.pd-main:hover img { transform: scale(1.15); }
+
+/* ============ 13. Back-to-top button ============ */
+#backToTop {
+  position: fixed; bottom: 90px; inset-inline-start: 22px; width: 46px; height: 46px;
+  border-radius: 50%; border: 1px solid var(--line); background: #fff; color: var(--gold-dark);
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+  box-shadow: var(--shadow); opacity: 0; visibility: hidden;
+  transform: translateY(12px); transition: all .3s ease; z-index: 89;
+}
+#backToTop.show { opacity: 1; visibility: visible; transform: translateY(0); }
+#backToTop:hover { background: var(--gold); color: #1a1000; transform: translateY(-3px); }
+
+/* ============ 14. Scroll progress bar (top of page) ============ */
+#scrollProgress {
+  position: fixed; top: 0; left: 0; height: 3px; width: 0%;
+  background: linear-gradient(90deg, var(--gold-light), var(--gold), var(--gold-dark));
+  z-index: 200; transition: width .1s linear;
+}
+
+/* ============ 15. Loading skeleton shimmer (for lazy images) ============ */
+.product-media { background: linear-gradient(100deg, #f3f0e8 30%, #fbf9f3 50%, #f3f0e8 70%); background-size: 200% 100%; animation: skeleton 1.4s ease-in-out infinite; }
+.product-media img { position: relative; z-index: 2; }
+@keyframes skeleton { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+/* ============ 16. Trust badges: subtle hover glow ============ */
+.trust-badge { transition: transform .3s, border-color .3s; }
+.trust-badge:hover { transform: translateY(-4px); border-color: var(--gold); }
+
+/* ============ 17. Add-to-wishlist toast refinement ============ */
+.toast { border-inline-start: 3px solid var(--gold); }
+
+/* ============ 18. Smooth focus rings (accessibility + polish) ============ */
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible {
+  outline: 2px solid var(--gold); outline-offset: 2px; border-radius: 6px;
+}
