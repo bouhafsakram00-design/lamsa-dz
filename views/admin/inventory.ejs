@@ -1,0 +1,30 @@
+<%- include('./_layout-open') %>
+  <div class="admin-head"><div><h1>Inventory</h1><p class="sub">Adjust stock & track movements</p></div></div>
+  <% if (lowStock.length) { %>
+    <div class="alert alert-error"><%= lowStock.length %> product(s) at or below their low-stock threshold.</div>
+  <% } %>
+  <div class="panel">
+    <table class="table">
+      <thead><tr><th>Product</th><th>SKU</th><th>Current</th><th>Adjust</th></tr></thead>
+      <tbody>
+        <% products.forEach(function(p){ %>
+          <tr>
+            <td><strong><%= p.name_en %></strong></td>
+            <td class="muted"><%= p.sku %></td>
+            <td><span class="pill <%= p.stock===0?'pill-out':(p.low_stock?'pill-low':'pill-in') %>"><%= p.stock %></span></td>
+            <td>
+              <form method="post" action="/admin/inventory/<%= p.id %>/adjust" style="display:flex;gap:6px;align-items:center">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <input type="number" name="change" placeholder="+/-" style="width:80px;padding:6px 8px;border:1px solid var(--line);border-radius:8px">
+                <select name="reason" style="padding:6px 8px;border:1px solid var(--line);border-radius:8px">
+                  <option value="restock">Restock</option><option value="sale">Sale</option><option value="adjustment">Adjustment</option><option value="return">Return</option>
+                </select>
+                <button class="btn btn-ghost btn-sm">Apply</button>
+              </form>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+<%- include('./_layout-close') %>

@@ -1,0 +1,69 @@
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a href="/" class="logo" aria-label="<%= settings.store_name %> home">
+      <img src="/img/logo.png" alt="<%= settings.store_name %> logo" width="36" height="36" />
+      <span>Lamsa<span class="logo-dz">DZ</span></span>
+    </a>
+
+    <nav class="nav-links" id="navLinks" aria-label="Primary">
+      <a href="/shop"><%= t('nav_shop') %></a>
+      <a href="/#categories"><%= t('nav_cat') %></a>
+      <a href="/#services"><%= t('nav_srv') %></a>
+      <a href="/faq"><%= t('nav_faq') %></a>
+      <a href="/#contact"><%= t('nav_contact') %></a>
+    </nav>
+
+    <div class="header-actions">
+      <!-- Search toggle -->
+      <button class="icon-btn" id="searchToggle" aria-label="Search">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      </button>
+
+      <!-- Language switcher -->
+      <div class="lang-switch" id="langSwitch">
+        <button class="icon-btn" aria-haspopup="true" aria-expanded="false" id="langBtn"><%= locale.toUpperCase() %></button>
+        <div class="lang-menu" role="menu">
+          <a href="?lang=en" role="menuitem">English</a>
+          <a href="?lang=fr" role="menuitem">Français</a>
+          <a href="?lang=ar" role="menuitem">العربية</a>
+        </div>
+      </div>
+
+      <!-- Account / wishlist -->
+      <% if (user) { %>
+        <a href="/wishlist" class="icon-btn" aria-label="<%= t('wishlist_title') %>" title="<%= t('wishlist_title') %>">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
+        </a>
+        <a href="/account" class="icon-btn" aria-label="<%= t('my_account') %>" title="<%= t('my_account') %>">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+        </a>
+      <% } else { %>
+        <a href="/login" class="icon-btn" aria-label="<%= t('login') %>" title="<%= t('login') %>">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+        </a>
+      <% } %>
+
+      <a class="btn btn-wa btn-sm wa-track" data-wa-key="hi"
+         href="https://wa.me/<%= settings.whatsapp_number %>?text=<%= encodeURIComponent('Hi LamsaDZ! 👋 I have a question.') %>" target="_blank" rel="noopener">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.8 4.9-1.3A10 10 0 1 0 12 2z"/></svg>
+        <span class="wa-label"><%= t('chat') %></span>
+      </a>
+
+      <button class="menu-toggle" id="menuToggle" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Search overlay -->
+  <div class="search-bar" id="searchBar" hidden>
+    <div class="wrap">
+      <form action="/shop" method="get" class="search-form" role="search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input type="search" name="q" id="searchInput" placeholder="<%= t('search_ph') %>" autocomplete="off" aria-label="<%= t('search_ph') %>" />
+        <button type="submit" class="btn btn-gold btn-sm"><%= t('nav_shop') %></button>
+      </form>
+      <div class="suggestions" id="suggestions" hidden></div>
+    </div>
+  </div>
+</header>

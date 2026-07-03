@@ -1,0 +1,20 @@
+<%- include('./_layout-open') %>
+  <div class="admin-head"><div><h1>Messages</h1><p class="sub">Customer inquiries from the contact form</p></div></div>
+  <div class="panel">
+    <table class="table">
+      <thead><tr><th>Date</th><th>Name</th><th>Phone</th><th>Message</th><th></th></tr></thead>
+      <tbody>
+        <% messages.forEach(function(m){ %>
+          <tr style="<%= m.is_read?'':'font-weight:600' %>">
+            <td class="muted"><%= m.created_at.slice(0,16) %></td>
+            <td><%= m.name %> <% if(!m.is_read){ %><span class="pill pill-low">New</span><% } %></td>
+            <td><%= m.phone||'—' %></td>
+            <td><%= m.body %></td>
+            <td><% if(!m.is_read){ %><form method="post" action="/admin/messages/<%= m.id %>/read"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button class="btn btn-ghost btn-sm">Mark read</button></form><% } %></td>
+          </tr>
+        <% }); %>
+        <% if(!messages.length){ %><tr><td colspan="5" class="muted" style="text-align:center;padding:30px">No messages yet.</td></tr><% } %>
+      </tbody>
+    </table>
+  </div>
+<%- include('./_layout-close') %>

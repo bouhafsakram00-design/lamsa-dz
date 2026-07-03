@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="<%= locale %>" dir="<%= dir %>">
+<head><%- include('../partials/head') %></head>
+<body class="<%= bodyClass %>">
+<%- include('../partials/header') %>
+
+<main>
+  <section class="shop-hero">
+    <div class="wrap">
+      <nav class="breadcrumb"><a href="/">Home</a> / <span><%= t('nav_shop') %></span></nav>
+      <h1><%= filters.q ? ('“' + filters.q + '”') : t('shop_title') %></h1>
+      <p class="sec-sub" style="margin:0"><%= t('shop_sub') %></p>
+    </div>
+  </section>
+
+  <section class="shop-body">
+    <div class="wrap shop-layout">
+      <!-- Filters sidebar -->
+      <aside class="shop-filters">
+        <form method="get" action="/shop" id="filterForm">
+          <input type="hidden" name="q" value="<%= filters.q %>" />
+          <input type="hidden" name="sort" value="<%= filters.sort %>" />
+
+          <div class="filter-block">
+            <h4><%= t('nav_cat') %></h4>
+            <a class="filter-link <%= !filters.category ? 'active' : '' %>" href="/shop?<%= filters.q ? 'q='+encodeURIComponent(filters.q)+'&' : '' %>sort=<%= filters.sort %>"><%= t('filter_all') %></a>
+            <% categories.forEach(function(c){ %>
+              <a class="filter-link <%= filters.category === c.slug ? 'active' : '' %>" href="/shop?category=<%= c.slug %>&sort=<%= filters.sort %>">
+                <%= field(c, 'name') %> <span class="fl-count"><%= c.product_count %></span>
+              </a>
+            <% }); %>
+          </div>
+
+          <div class="filter-block">
+            <h4>Price (DA)</h4>
+            <div class="price-inputs">
+              <input type="number" name="min" placeholder="Min" value="<%= filters.min %>" min="0" />
+              <input type="number" name="max" placeholder="Max" value="<%= filters.max %>" min="0" />
+            </div>
+            <% if (filters.category) { %><input type="hidden" name="category" value="<%= filters.category %>" /><% } %>
+            <label class="check"><input type="checkbox" name="in_stock" value="1" <%= filters.in_stock === '1' ? 'checked' : '' %> /> <%= t('in_stock') %></label>
+            <button type="submit" class="btn btn-gold btn-sm btn-block" style="margin-top:12px">Apply</button>
+          </div>
+        </form>
+      </aside>
+
+      <!-- Results -->
+      <div class="shop-results">
+        <div class="shop-toolbar">
+          <span class="result-count"><%= result.total %> products</span>
+          <form method="get" action="/shop" class="sort-form">
+            <% Object.keys(filters).forEach(function(k){ if(k!=='sort' && filters[k]){ %><input type="hidden" name="<%= k %>" value="<%= filters[k] %>" /><% }}); %>
+            <label><%= t('sort_label') %>:</label>
+            <select name="sort" onchange="this.form.submit()">
+              <option value="newest" <%= filters.sort==='newest'?'selected':'' %>><%= t('sort_newest') %></option>
+              <option value="price_asc" <%= filters.sort==='price_asc'?'selected':'' %>><%= t('sort_price_asc') %></option>
+              <option value="price_desc" <%= filters.sort==='price_desc'?'selected':'' %>><%= t('sort_price_desc') %></option>
+              <option value="name" <%= filters.sort==='name'?'selected':'' %>><%= t('sort_name') %></option>
+              <option value="popular" <%= filters.sort==='popular'?'selected':'' %>><%= t('sort_popular') %></option>
+            </select>
+          </form>
+        </div>
+
+        <% if (!result.items.length) { %>
+          <div class="empty-state">
+            <p><%= t('no_results') %></p>
+            <a class="btn btn-wa wa-track" data-wa-key="find"
+               href="https://wa.me/<%= settings.whatsapp_number %>?text=<%= encodeURIComponent("Hi LamsaDZ! 👋 I'm looking for a product. Can you help?") %>" target="_blank" rel="noopener"><%= t('cta_btn') %></a>
+          </div>
+        <% } else { %>
+          <div class="product-grid">
+            <% result.items.forEach(function(product){ %>
+              <%- include('../partials/product-card', { product: product, wishlistIds: wishlistIds }) %>
+            <% }); %>
+          </div>
+
+          <% if (result.pages > 1) { %>
+            <nav class="pagination">
+              <% for (var pg = 1; pg <= result.pages; pg++) {
+                   var qp = Object.assign({}, filters, { page: pg });
+                   var qs = Object.keys(qp).filter(function(k){return qp[k];}).map(function(k){return k+'='+encodeURIComponent(qp[k]);}).join('&');
+              %>
+                <a href="/shop?<%= qs %>" class="<%= result.page === pg ? 'active' : '' %>"><%= pg %></a>
+              <% } %>
+            </nav>
+          <% } %>
+        <% } %>
+      </div>
+    </div>
+  </section>
+</main>
+
+<%- include('../partials/footer') %>
+<%- include('../partials/wa-float') %>
+<%- include('../partials/scripts') %>
+</body>
+</html>

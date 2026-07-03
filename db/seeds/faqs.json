@@ -1,0 +1,50 @@
+[
+  {
+    "q_en": "How do I place an order?",
+    "q_fr": "Comment passer une commande ?",
+    "q_ar": "كيف أقوم بطلب منتج؟",
+    "a_en": "Browse our products and tap \"Order on WhatsApp\" on any item. The product name and price are pre-filled in your message — just send it and we'll confirm availability, total and delivery.",
+    "a_fr": "Parcourez nos produits et cliquez sur « Commander sur WhatsApp ». Le nom et le prix du produit sont pré-remplis dans votre message — envoyez-le et nous confirmerons la disponibilité, le total et la livraison.",
+    "a_ar": "تصفّح منتجاتنا واضغط على «اطلب عبر واتساب» على أي منتج. اسم المنتج والسعر يُملأان تلقائيًا في رسالتك — أرسلها وسنؤكد التوفر والمبلغ الإجمالي والتوصيل."
+  },
+  {
+    "q_en": "Do you deliver across Algeria?",
+    "q_fr": "Livrez-vous partout en Algérie ?",
+    "q_ar": "هل توصّلون إلى كامل الجزائر؟",
+    "a_en": "Yes. We offer in-store pickup in Tissemsilt and home delivery to all 58 wilayas via trusted couriers (Yalidine / ZR Express). Delivery time is typically 2–5 days depending on your wilaya.",
+    "a_fr": "Oui. Retrait en magasin à Tissemsilt et livraison à domicile dans les 58 wilayas via des transporteurs de confiance (Yalidine / ZR Express). Délai habituel : 2 à 5 jours selon la wilaya.",
+    "a_ar": "نعم. نوفّر الاستلام من المتجر في تيسمسيلت والتوصيل إلى المنزل لكل الولايات الـ58 عبر شركات توصيل موثوقة (Yalidine / ZR Express). مدة التوصيل عادةً من 2 إلى 5 أيام حسب الولاية."
+  },
+  {
+    "q_en": "What payment methods do you accept?",
+    "q_fr": "Quels modes de paiement acceptez-vous ?",
+    "q_ar": "ما هي طرق الدفع المتاحة؟",
+    "a_en": "Cash on delivery (paiement à la livraison), cash in-store, and CCP / BaridiMob transfer. You pay only when you receive and check your product for home delivery.",
+    "a_fr": "Paiement à la livraison, espèces en magasin, et virement CCP / BaridiMob. Pour la livraison à domicile, vous payez seulement à la réception après vérification.",
+    "a_ar": "الدفع عند الاستلام، الدفع نقدًا في المتجر، والتحويل عبر CCP / BaridiMob. في التوصيل المنزلي تدفع فقط عند الاستلام بعد فحص المنتج."
+  },
+  {
+    "q_en": "Are your products original?",
+    "q_fr": "Vos produits sont-ils originaux ?",
+    "q_ar": "هل منتجاتكم أصلية؟",
+    "a_en": "Yes — we sell genuine products only and clearly label any compatible/aftermarket accessory. If a product ever differs from the listing, we replace or refund it.",
+    "a_fr": "Oui — nous vendons uniquement des produits authentiques et indiquons clairement tout accessoire compatible. Si un produit diffère de l'annonce, nous le remplaçons ou le remboursons.",
+    "a_ar": "نعم — نبيع منتجات أصلية فقط ونوضّح بشكل صريح أي إكسسوار متوافق/بديل. وإذا اختلف أي منتج عن الوصف، نستبدله أو نعيد المبلغ."
+  },
+  {
+    "q_en": "What is your warranty and return policy?",
+    "q_fr": "Quelle est votre garantie et politique de retour ?",
+    "q_ar": "ما هو الضمان وسياسة الإرجاع؟",
+    "a_en": "Phones and devices include a warranty (see the warranty section). You can return or exchange unused items in original packaging within 7 days. Defective items are covered by warranty terms.",
+    "a_fr": "Les téléphones et appareils incluent une garantie (voir la section garantie). Retour ou échange des articles non utilisés sous 7 jours. Les articles défectueux sont couverts par la garantie.",
+    "a_ar": "الهواتف والأجهزة تشمل ضمانًا (انظر قسم الضمان). يمكنك الإرجاع أو الاستبدال للمنتجات غير المستعملة بتغليفها الأصلي خلال 7 أيام. المنتجات المعيبة مغطاة بشروط الضمان."
+  },
+  {
+    "q_en": "Can you find a product that's not on the website?",
+    "q_fr": "Pouvez-vous trouver un produit absent du site ?",
+    "q_ar": "هل يمكنكم توفير منتج غير موجود في الموقع؟",
+    "a_en": "Absolutely. Message us on WhatsApp with what you're looking for and we'll source it for you at the best possible price.",
+    "a_fr": "Bien sûr. Écrivez-nous sur WhatsApp ce que vous cherchez et nous le trouverons au meilleur prix possible.",
+    "a_ar": "بالتأكيد. راسلنا عبر واتساب بما تبحث عنه وسنوفّره لك بأفضل سعر ممكن."
+  }
+]

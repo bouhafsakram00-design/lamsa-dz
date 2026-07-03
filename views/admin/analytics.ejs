@@ -1,0 +1,37 @@
+<%- include('./_layout-open') %>
+  <div class="admin-head"><div><h1>Analytics</h1><p class="sub">Last <%= days %> days</p></div>
+    <form method="get"><select name="days" onchange="this.form.submit()">
+      <% [7,14,30,60,90].forEach(function(d){ %><option value="<%= d %>" <%= days===d?'selected':'' %>>Last <%= d %> days</option><% }); %>
+    </select></form>
+  </div>
+  <div class="stat-grid">
+    <div class="stat-card"><span class="ic">👁️</span><div class="val"><%= summary.pageview %></div><div class="lbl">Page views</div></div>
+    <div class="stat-card"><span class="ic">🙋</span><div class="val"><%= summary.uniqueVisitors %></div><div class="lbl">Unique visitors</div></div>
+    <div class="stat-card"><span class="ic">💬</span><div class="val"><%= summary.whatsapp_click %></div><div class="lbl">WhatsApp clicks</div></div>
+    <div class="stat-card"><span class="ic">🛒</span><div class="val"><%= summary.product_click %></div><div class="lbl">Product clicks</div></div>
+    <div class="stat-card"><span class="ic">🔎</span><div class="val"><%= summary.search %></div><div class="lbl">Searches</div></div>
+  </div>
+  <div class="panel"><div class="panel-head"><h2>Daily traffic</h2></div><div class="panel-body">
+    <% var maxV=Math.max(1, ...series.map(function(s){return Math.max(s.views,s.wa,s.clicks);})); %>
+    <div class="chart">
+      <% series.forEach(function(s){ %>
+        <div class="bar-wrap" title="<%= s.day %>"><div class="bar" style="height:<%= Math.round((s.views/maxV)*100) %>%"></div><div class="bar wa" style="height:<%= Math.round((s.wa/maxV)*100) %>%"></div><span class="bl"><%= s.day.slice(5) %></span></div>
+      <% }); %>
+    </div>
+    <div class="chart-legend"><span><span class="dot" style="background:var(--gold)"></span>Views</span><span><span class="dot" style="background:#059669"></span>WhatsApp</span></div>
+  </div></div>
+  <div class="two-col">
+    <div class="panel"><div class="panel-head"><h2>Top products</h2></div><div class="panel-body" style="padding:0"><table class="table"><tbody>
+      <% topProducts.forEach(function(p){ %><tr><td><%= p.name_en %></td><td><%= p.clicks %></td></tr><% }); %>
+      <% if(!topProducts.length){ %><tr><td class="muted">No data</td></tr><% } %>
+    </tbody></table></div></div>
+    <div class="panel"><div class="panel-head"><h2>Top searches</h2></div><div class="panel-body" style="padding:0"><table class="table"><tbody>
+      <% topSearches.forEach(function(s){ %><tr><td><%= s.query %></td><td><%= s.c %></td></tr><% }); %>
+      <% if(!topSearches.length){ %><tr><td class="muted">No data</td></tr><% } %>
+    </tbody></table></div></div>
+  </div>
+  <div class="panel"><div class="panel-head"><h2>Top pages</h2></div><div class="panel-body" style="padding:0"><table class="table"><tbody>
+    <% topPages.forEach(function(p){ %><tr><td><%= p.path %></td><td><%= p.c %></td></tr><% }); %>
+    <% if(!topPages.length){ %><tr><td class="muted">No data</td></tr><% } %>
+  </tbody></table></div></div>
+<%- include('./_layout-close') %>

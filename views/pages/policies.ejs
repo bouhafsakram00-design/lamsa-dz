@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="<%= locale %>" dir="<%= dir %>">
+<head><%- include('../partials/head') %></head>
+<body class="<%= bodyClass %>">
+<%- include('../partials/header') %>
+<main class="doc-page">
+  <div class="wrap wrap-narrow">
+    <nav class="breadcrumb"><a href="/">Home</a> / <span>Policies</span></nav>
+    <h1>Delivery, Warranty &amp; Returns</h1>
+
+    <div class="doc-block" id="delivery">
+      <h2>🚚 <%= t('delivery_title') %></h2>
+      <p><%= settings.delivery_info %></p>
+    </div>
+    <div class="doc-block" id="warranty">
+      <h2>🛡️ <%= t('warranty_title') %></h2>
+      <p><%= settings.warranty_info %></p>
+    </div>
+    <div class="doc-block" id="returns">
+      <h2>↩️ <%= t('returns_title') %></h2>
+      <p><%= settings.return_policy %></p>
+    </div>
+    <div class="doc-block">
+      <h2>💵 <%= t('badge_cod') %></h2>
+      <p>You can pay cash on delivery (paiement à la livraison), in-store, or via CCP / BaridiMob. For home delivery you only pay after you receive and inspect your product.</p>
+    </div>
+
+    <div class="center-cta">
+      <a class="btn btn-wa wa-track" data-wa-key="store" href="https://wa.me/<%= settings.whatsapp_number %>?text=<%= encodeURIComponent('Hi LamsaDZ! 👋 I have a question about delivery/warranty.') %>" target="_blank" rel="noopener"><%= t('chat') %></a>
+    </div>
+  </div>
+</main>
+<%- include('../partials/footer') %>
+<%- include('../partials/wa-float') %>
+<%- include('../partials/scripts') %>
+</body>
+</html>

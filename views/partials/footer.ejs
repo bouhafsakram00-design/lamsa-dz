@@ -1,0 +1,76 @@
+<footer class="site-footer">
+  <div class="wrap">
+    <!-- Trust badges -->
+    <div class="trust-badges">
+      <div class="trust-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg>
+        <span><%= t('badge_original') %></span>
+      </div>
+      <div class="trust-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="6" width="15" height="11" rx="2"/><path d="M16 9h4l3 3v5h-7z"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg>
+        <span><%= t('badge_delivery') %></span>
+      </div>
+      <div class="trust-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 12V8H6a2 2 0 0 1 0-4h12v4"/><path d="M4 6v12a2 2 0 0 0 2 2h14v-4"/><circle cx="17" cy="14" r="1.5"/></svg>
+        <span><%= t('badge_cod') %></span>
+      </div>
+      <div class="trust-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 14.8 7.2 17l.9-5.4L4.2 7.7l5.4-.8z"/></svg>
+        <span><%= t('badge_warranty') %></span>
+      </div>
+    </div>
+
+    <div class="foot-grid">
+      <div class="foot-about">
+        <a href="/" class="logo logo-foot">
+          <img src="/img/logo.png" alt="<%= settings.store_name %>" width="34" height="34" />
+          <span>Lamsa<span class="logo-dz">DZ</span></span>
+        </a>
+        <p><%= t('foot_about') %></p>
+        <a class="btn btn-wa btn-sm wa-track" data-wa-key="store"
+           href="https://wa.me/<%= settings.whatsapp_number %>?text=<%= encodeURIComponent("Hi LamsaDZ! 👋 I'd like to ask about your store.") %>" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.8 4.9-1.3A10 10 0 1 0 12 2z"/></svg>
+          <%= settings.store_phone %>
+        </a>
+      </div>
+
+      <div class="foot-col">
+        <h4><%= t('foot_shop') %></h4>
+        <% navCategories.forEach(function(c){ %>
+          <a href="/shop?category=<%= c.slug %>"><%= field(c, 'name') %></a>
+        <% }); %>
+      </div>
+
+      <div class="foot-col">
+        <h4><%= t('foot_company') %></h4>
+        <a href="/#services"><%= t('nav_srv') %></a>
+        <a href="/#why"><%= t('nav_why') %></a>
+        <a href="/#contact"><%= t('nav_contact') %></a>
+        <a href="/faq"><%= t('nav_faq') %></a>
+      </div>
+
+      <div class="foot-col">
+        <h4><%= t('foot_help') %></h4>
+        <a href="/policies#delivery"><%= t('delivery_title') %></a>
+        <a href="/policies#warranty"><%= t('warranty_title') %></a>
+        <a href="/policies#returns"><%= t('returns_title') %></a>
+        <% if (user) { %><a href="/account"><%= t('my_account') %></a><% } else { %><a href="/login"><%= t('login') %></a><% } %>
+      </div>
+
+      <div class="foot-col foot-news">
+        <h4><%= t('newsletter_title') %></h4>
+        <form class="news-form" id="newsForm">
+          <input type="email" name="email" placeholder="<%= t('newsletter_ph') %>" required aria-label="<%= t('newsletter_ph') %>" />
+          <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          <button type="submit" class="btn btn-gold btn-sm"><%= t('subscribe') %></button>
+        </form>
+        <p class="news-msg" id="newsMsg" aria-live="polite"></p>
+      </div>
+    </div>
+
+    <div class="foot-bottom">
+      <span>© <%= new Date().getFullYear() %> <%= settings.store_name %>. <%= t('rights') %></span>
+      <span class="credit">Made by <strong>Akram A. Bouhafs</strong></span>
+    </div>
+  </div>
+</footer>

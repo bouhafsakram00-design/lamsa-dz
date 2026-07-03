@@ -1,0 +1,62 @@
+<%- include('./_layout-open') %>
+  <div class="admin-head">
+    <div><h1>Products</h1><p class="sub"><%= result.total %> products</p></div>
+    <a href="/admin/products/new" class="btn btn-primary">+ Add product</a>
+  </div>
+
+  <% if (query.saved) { %><div class="alert alert-success">Product saved successfully.</div><% } %>
+  <% if (query.deleted) { %><div class="alert alert-success">Product deleted.</div><% } %>
+
+  <form class="toolbar" method="get" action="/admin/products">
+    <input class="grow" type="search" name="q" placeholder="Search by name or SKU…" value="<%= filters.q %>" />
+    <select name="category">
+      <option value="">All categories</option>
+      <% categories.forEach(function(c){ %><option value="<%= c.slug %>" <%= filters.category===c.slug?'selected':'' %>><%= c.name_en %></option><% }); %>
+    </select>
+    <select name="sort">
+      <option value="newest" <%= filters.sort==='newest'?'selected':'' %>>Newest</option>
+      <option value="name" <%= filters.sort==='name'?'selected':'' %>>Name</option>
+      <option value="price_asc" <%= filters.sort==='price_asc'?'selected':'' %>>Price ↑</option>
+      <option value="price_desc" <%= filters.sort==='price_desc'?'selected':'' %>>Price ↓</option>
+    </select>
+    <button class="btn btn-ghost">Filter</button>
+  </form>
+
+  <div class="panel">
+    <table class="table">
+      <thead><tr><th>Image</th><th>Name</th><th>SKU</th><th>Price</th><th>Stock</th><th>Status</th><th></th></tr></thead>
+      <tbody>
+        <% result.items.forEach(function(p){ %>
+          <tr>
+            <td><% if(p.image){ %><img class="thumb" src="<%= p.image %>" alt=""><% } else { %><div class="thumb" style="display:flex;align-items:center;justify-content:center">📦</div><% } %></td>
+            <td>
+              <strong><%= p.name_en %></strong>
+              <% if(p.is_featured){ %><span class="pill pill-in">Featured</span><% } %>
+              <% if(p.tag){ %><span class="pill pill-low"><%= p.tag %></span><% } %>
+            </td>
+            <td class="muted"><%= p.sku %></td>
+            <td><strong><%= helpers.formatDA(p.price) %></strong><% if(p.old_price){ %><br><small class="muted" style="text-decoration:line-through"><%= helpers.formatDA(p.old_price) %></small><% } %></td>
+            <td><span class="pill <%= p.stock===0?'pill-out':(p.low_stock?'pill-low':'pill-in') %>"><%= p.stock %></span></td>
+            <td><span class="pill <%= p.is_active?'pill-in':'pill-off' %>"><%= p.is_active?'Active':'Hidden' %></span></td>
+            <td style="white-space:nowrap">
+              <a href="/admin/products/<%= p.id %>/edit" class="btn btn-ghost btn-sm">Edit</a>
+              <form method="post" action="/admin/products/<%= p.id %>/delete" style="display:inline" onsubmit="return confirm('Delete this product?')">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+                <button class="btn btn-danger btn-sm">Delete</button>
+              </form>
+            </td>
+          </tr>
+        <% }); %>
+        <% if(!result.items.length){ %><tr><td colspan="7" class="muted" style="text-align:center;padding:30px">No products found.</td></tr><% } %>
+      </tbody>
+    </table>
+  </div>
+
+  <% if (result.pages > 1) { %>
+    <div class="toolbar" style="justify-content:center">
+      <% for(var pg=1; pg<=result.pages; pg++){ %>
+        <a class="btn <%= result.page===pg?'btn-primary':'btn-ghost' %> btn-sm" href="/admin/products?page=<%= pg %>&q=<%= filters.q %>&sort=<%= filters.sort %>&category=<%= filters.category %>"><%= pg %></a>
+      <% } %>
+    </div>
+  <% } %>
+<%- include('./_layout-close') %>

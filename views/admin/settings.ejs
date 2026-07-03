@@ -1,0 +1,26 @@
+<%- include('./_layout-open') %>
+  <div class="admin-head"><div><h1>Settings</h1><p class="sub">Store info shown across the site</p></div></div>
+  <% if (saved) { %><div class="alert alert-success">Settings saved.</div><% } %>
+  <form method="post" action="/admin/settings">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <div class="panel"><div class="panel-head"><h2>Store information</h2></div><div class="panel-body">
+      <div class="form-grid">
+        <div class="form-row"><label>Store name</label><input name="store_name" value="<%= settings.store_name||'' %>"></div>
+        <div class="form-row"><label>WhatsApp number (no +)</label><input name="whatsapp_number" value="<%= settings.whatsapp_number||'' %>"></div>
+        <div class="form-row"><label>Phone (display)</label><input name="store_phone" value="<%= settings.store_phone||'' %>"></div>
+        <div class="form-row"><label>Email</label><input name="store_email" value="<%= settings.store_email||'' %>"></div>
+        <div class="form-row full"><label>Address</label><input name="store_address" value="<%= settings.store_address||'' %>"></div>
+        <div class="form-row full"><label>Opening hours</label><input name="store_hours" value="<%= settings.store_hours||'' %>"></div>
+      </div>
+    </div></div>
+    <div class="panel"><div class="panel-head"><h2>Policies (shown on /policies)</h2></div><div class="panel-body">
+      <div class="form-row"><label>Delivery info</label><textarea name="delivery_info" rows="2"><%= settings.delivery_info||'' %></textarea></div>
+      <div class="form-row" style="margin-top:12px"><label>Warranty info</label><textarea name="warranty_info" rows="2"><%= settings.warranty_info||'' %></textarea></div>
+      <div class="form-row" style="margin-top:12px"><label>Return policy</label><textarea name="return_policy" rows="2"><%= settings.return_policy||'' %></textarea></div>
+    </div></div>
+    <div class="panel"><div class="panel-head"><h2>Analytics</h2></div><div class="panel-body">
+      <div class="form-row"><label>Google Analytics 4 ID (G-XXXX) — optional</label><input name="ga_id" value="<%= settings.ga_id||'' %>" placeholder="G-XXXXXXXXXX"></div>
+    </div></div>
+    <div class="form-actions"><button class="btn btn-primary">Save settings</button></div>
+  </form>
+<%- include('./_layout-close') %>

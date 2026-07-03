@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="<%= locale %>" dir="<%= dir %>">
+<head><%- include('../partials/head') %></head>
+<body class="<%= bodyClass %>">
+<%- include('../partials/header') %>
+<main>
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <h1><%= t('login') %></h1>
+      <p class="sub">Welcome back to <%= settings.store_name %></p>
+      <% (errors||[]).forEach(function(e){ %><div class="auth-error"><%= e.msg %></div><% }); %>
+      <form class="auth-form" method="post" action="/login">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+        <input type="hidden" name="next" value="<%= next %>" />
+        <input type="email" name="email" placeholder="Email" required autocomplete="email" />
+        <input type="password" name="password" placeholder="Password" required autocomplete="current-password" />
+        <button type="submit" class="btn btn-gold btn-block"><%= t('login') %></button>
+      </form>
+      <p class="auth-alt"><a href="/forgot">Forgot password?</a></p>
+      <p class="auth-alt">No account? <a href="/register"><%= t('register') %></a></p>
+    </div>
+  </div>
+</main>
+<%- include('../partials/footer') %>
+<%- include('../partials/scripts') %>
+</body>
+</html>

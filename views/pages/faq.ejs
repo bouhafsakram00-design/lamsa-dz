@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="<%= locale %>" dir="<%= dir %>">
+<head><%- include('../partials/head') %></head>
+<body class="<%= bodyClass %>">
+<%- include('../partials/header') %>
+<main class="doc-page">
+  <div class="wrap wrap-narrow">
+    <nav class="breadcrumb"><a href="/">Home</a> / <span><%= t('nav_faq') %></span></nav>
+    <h1><%= t('faq_title') %></h1>
+    <div class="faq-list">
+      <% faqs.forEach(function(f){ %>
+        <details class="faq-item">
+          <summary><%= field(f, 'q') %></summary>
+          <div class="faq-answer"><%= field(f, 'a') %></div>
+        </details>
+      <% }); %>
+    </div>
+    <div class="center-cta">
+      <a class="btn btn-wa wa-track" data-wa-key="hi" href="https://wa.me/<%= settings.whatsapp_number %>?text=<%= encodeURIComponent('Hi LamsaDZ! 👋 I have a question.') %>" target="_blank" rel="noopener"><%= t('chat') %></a>
+    </div>
+  </div>
+</main>
+<%- include('../partials/footer') %>
+<%- include('../partials/wa-float') %>
+<%- include('../partials/scripts') %>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[<% faqs.forEach(function(f,i){ %>{"@type":"Question","name":<%- JSON.stringify(field(f,'q')) %>,"acceptedAnswer":{"@type":"Answer","text":<%- JSON.stringify(field(f,'a')) %>}}<%= i<faqs.length-1?',':'' %><% }); %>]}
+</script>
+</body>
+</html>

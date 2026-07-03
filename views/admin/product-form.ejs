@@ -1,0 +1,90 @@
+<%- include('./_layout-open') %>
+  <%
+    var p = product || {};
+    var isEdit = p && p.id;
+    var action = isEdit ? ('/admin/products/' + p.id) : '/admin/products';
+  %>
+  <div class="admin-head">
+    <div><h1><%= isEdit ? 'Edit product' : 'New product' %></h1><p class="sub"><%= isEdit ? p.name_en : 'Add a new product to your store' %></p></div>
+    <a href="/admin/products" class="btn btn-ghost">← Back</a>
+  </div>
+
+  <% (errors||[]).forEach(function(e){ %><div class="alert alert-error"><%= e.field ? (e.field + ': ') : '' %><%= e.msg %></div><% }); %>
+
+  <form method="post" action="<%= action %>" enctype="multipart/form-data" id="productForm">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+    <div class="two-col">
+      <div class="panel"><div class="panel-body">
+        <div class="form-grid">
+          <div class="form-row full"><label>Name (English) *</label><input name="name_en" value="<%= p.name_en||'' %>" required></div>
+          <div class="form-row"><label>Name (French)</label><input name="name_fr" value="<%= p.name_fr||'' %>"></div>
+          <div class="form-row"><label>Name (Arabic)</label><input name="name_ar" value="<%= p.name_ar||'' %>" dir="rtl"></div>
+          <div class="form-row full"><label>Description (English)</label><textarea name="desc_en" rows="2"><%= p.desc_en||'' %></textarea></div>
+          <div class="form-row"><label>Description (French)</label><textarea name="desc_fr" rows="2"><%= p.desc_fr||'' %></textarea></div>
+          <div class="form-row"><label>Description (Arabic)</label><textarea name="desc_ar" rows="2" dir="rtl"><%= p.desc_ar||'' %></textarea></div>
+          <div class="form-row"><label>SKU *</label><input name="sku" value="<%= p.sku||'' %>" required placeholder="LZ-0001"></div>
+          <div class="form-row"><label>Slug (URL) *</label><input name="slug" value="<%= p.slug||'' %>" required placeholder="auto from name if blank"></div>
+        </div>
+      </div></div>
+
+      <div>
+        <div class="panel"><div class="panel-head"><h2>Pricing & stock</h2></div><div class="panel-body">
+          <div class="form-row"><label>Price (DA) *</label><input type="number" name="price" value="<%= p.price||0 %>" min="0" required></div>
+          <div class="form-row" style="margin-top:12px"><label>Old price (for discount)</label><input type="number" name="old_price" value="<%= p.old_price||'' %>" min="0"></div>
+          <div class="form-row" style="margin-top:12px"><label>Stock quantity</label><input type="number" name="stock" value="<%= p.stock!=null?p.stock:0 %>" min="0"></div>
+          <div class="form-row" style="margin-top:12px"><label>Low-stock alert at</label><input type="number" name="low_stock_at" value="<%= p.low_stock_at!=null?p.low_stock_at:3 %>" min="0"></div>
+        </div></div>
+
+        <div class="panel"><div class="panel-head"><h2>Organize</h2></div><div class="panel-body">
+          <div class="form-row"><label>Category</label><select name="category_id">
+            <option value="">— None —</option>
+            <% categories.forEach(function(c){ %><option value="<%= c.id %>" <%= (p.category_id==c.id)?'selected':'' %>><%= c.name_en %></option><% }); %>
+          </select></div>
+          <div class="form-row" style="margin-top:12px"><label>Tag</label><select name="tag">
+            <% ['','Hot','New'].forEach(function(tg){ %><option value="<%= tg %>" <%= (p.tag===tg)?'selected':'' %>><%= tg||'— None —' %></option><% }); %>
+          </select></div>
+          <label class="form-check" style="margin-top:14px"><input type="checkbox" name="is_featured" <%= p.is_featured?'checked':'' %>> Featured product</label>
+          <label class="form-check" style="margin-top:10px"><input type="checkbox" name="is_active" <%= (p.is_active==null||p.is_active)?'checked':'' %>> Active (visible)</label>
+        </div></div>
+
+        <div class="panel"><div class="panel-head"><h2>Images</h2></div><div class="panel-body">
+          <input type="file" name="images" accept="image/*" multiple>
+          <p class="muted" style="font-size:12px;margin-top:6px">JPG/PNG/WebP, optimized automatically.</p>
+          <% if (isEdit && images && images.length) { %>
+            <div class="img-grid">
+              <% images.forEach(function(im){ %>
+                <div class="img-tile">
+                  <img src="<%= im.url %>" alt="">
+                  <span class="del"><form method="post" action="/admin/products/<%= p.id %>/images/<%= im.id %>/delete" onsubmit="return confirm('Delete image?')"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button>×</button></form></span>
+                </div>
+              <% }); %>
+            </div>
+          <% } %>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="panel"><div class="panel-head"><h2>SEO (optional)</h2></div><div class="panel-body">
+      <div class="form-grid">
+        <div class="form-row full"><label>Meta title</label><input name="meta_title" value="<%= p.meta_title||'' %>"></div>
+        <div class="form-row full"><label>Meta description</label><textarea name="meta_desc" rows="2"><%= p.meta_desc||'' %></textarea></div>
+      </div>
+    </div></div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary"><%= isEdit ? 'Save changes' : 'Create product' %></button>
+      <a href="/admin/products" class="btn btn-ghost">Cancel</a>
+    </div>
+  </form>
+
+  <script>
+    // Auto-fill slug from name if empty; send CSRF header too (belt & braces for multipart)
+    var f=document.getElementById('productForm');
+    var nameEn=f.querySelector('[name=name_en]'), slug=f.querySelector('[name=slug]');
+    nameEn.addEventListener('blur',function(){
+      if(!slug.value.trim()){
+        slug.value=nameEn.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+      }
+    });
+  </script>
+<%- include('./_layout-close') %>

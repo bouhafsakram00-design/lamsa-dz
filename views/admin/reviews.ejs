@@ -1,0 +1,23 @@
+<%- include('./_layout-open') %>
+  <div class="admin-head"><div><h1>Reviews</h1><p class="sub"><%= pending.length %> pending approval</p></div></div>
+  <div class="panel">
+    <table class="table">
+      <thead><tr><th>Product</th><th>Author</th><th>Rating</th><th>Review</th><th></th></tr></thead>
+      <tbody>
+        <% pending.forEach(function(r){ %>
+          <tr>
+            <td><%= r.product_name %></td>
+            <td><%= r.author_name %></td>
+            <td style="color:var(--gold)"><% for(var i=0;i<r.rating;i++){ %>★<% } %></td>
+            <td><%= r.body %></td>
+            <td style="white-space:nowrap">
+              <form method="post" action="/admin/reviews/<%= r.id %>/approve" style="display:inline"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button class="btn btn-success btn-sm">Approve</button></form>
+              <form method="post" action="/admin/reviews/<%= r.id %>/delete" style="display:inline" onsubmit="return confirm('Delete?')"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button class="btn btn-danger btn-sm">Delete</button></form>
+            </td>
+          </tr>
+        <% }); %>
+        <% if(!pending.length){ %><tr><td colspan="5" class="muted" style="text-align:center;padding:30px">No pending reviews ✅</td></tr><% } %>
+      </tbody>
+    </table>
+  </div>
+<%- include('./_layout-close') %>

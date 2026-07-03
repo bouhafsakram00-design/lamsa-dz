@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="<%= locale %>" dir="<%= dir %>">
+<head><%- include('../partials/head') %></head>
+<body class="<%= bodyClass %>">
+<%- include('../partials/header') %>
+<main>
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <h1>Set new password</h1>
+      <% (errors||[]).forEach(function(e){ %><div class="auth-error"><%= e.msg %></div><% }); %>
+      <form class="auth-form" method="post" action="/reset">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+        <input type="hidden" name="token" value="<%= token %>" />
+        <input type="password" name="password" placeholder="New password (min 8 chars)" required minlength="8" />
+        <button type="submit" class="btn btn-gold btn-block">Update password</button>
+      </form>
+      <p class="auth-alt"><a href="/login">Back to login</a></p>
+    </div>
+  </div>
+</main>
+<%- include('../partials/footer') %>
+<%- include('../partials/scripts') %>
+</body>
+</html>

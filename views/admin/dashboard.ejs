@@ -1,0 +1,90 @@
+<%- include('./_layout-open') %>
+  <div class="admin-head">
+    <div><h1>Dashboard</h1><p class="sub">Last 30 days overview</p></div>
+    <a href="/admin/products/new" class="btn btn-primary">+ Add product</a>
+  </div>
+
+  <!-- Key stats -->
+  <div class="stat-grid">
+    <div class="stat-card"><span class="ic">👁️</span><div class="val"><%= summary.pageview %></div><div class="lbl">Page views</div></div>
+    <div class="stat-card"><span class="ic">🙋</span><div class="val"><%= summary.uniqueVisitors %></div><div class="lbl">Unique visitors</div></div>
+    <div class="stat-card"><span class="ic">💬</span><div class="val"><%= summary.whatsapp_click %></div><div class="lbl">WhatsApp clicks</div></div>
+    <div class="stat-card"><span class="ic">🛒</span><div class="val"><%= summary.product_click %></div><div class="lbl">Product clicks</div></div>
+    <div class="stat-card"><span class="ic">🔎</span><div class="val"><%= summary.search %></div><div class="lbl">Searches</div></div>
+  </div>
+
+  <div class="stat-grid">
+    <div class="stat-card"><div class="val"><%= stats.activeProducts %>/<%= stats.products %></div><div class="lbl">Active products</div></div>
+    <div class="stat-card"><div class="val"><%= stats.categories %></div><div class="lbl">Categories</div></div>
+    <div class="stat-card"><div class="val"><%= stats.customers %></div><div class="lbl">Customers</div></div>
+    <div class="stat-card"><div class="val"><%= stats.reviews %></div><div class="lbl">Approved reviews</div></div>
+    <div class="stat-card"><div class="val"><%= stats.subscribers %></div><div class="lbl">Subscribers</div></div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <!-- Traffic chart -->
+      <div class="panel">
+        <div class="panel-head"><h2>Traffic — last 14 days</h2></div>
+        <div class="panel-body">
+          <% var maxV = Math.max(1, ...series.map(function(s){return Math.max(s.views, s.wa);})); %>
+          <div class="chart">
+            <% series.forEach(function(s){ %>
+              <div class="bar-wrap" title="<%= s.day %>: <%= s.views %> views, <%= s.wa %> WA">
+                <div class="bar" style="height:<%= Math.round((s.views/maxV)*100) %>%"></div>
+                <div class="bar wa" style="height:<%= Math.round((s.wa/maxV)*100) %>%"></div>
+                <span class="bl"><%= s.day.slice(5) %></span>
+              </div>
+            <% }); %>
+            <% if (!series.length) { %><p class="muted">No data yet — visit your store to generate traffic.</p><% } %>
+          </div>
+          <div class="chart-legend"><span><span class="dot" style="background:var(--gold)"></span>Views</span><span><span class="dot" style="background:#059669"></span>WhatsApp</span></div>
+        </div>
+      </div>
+
+      <!-- Top products -->
+      <div class="panel">
+        <div class="panel-head"><h2>Top products (by clicks)</h2></div>
+        <div class="panel-body" style="padding:0">
+          <table class="table">
+            <thead><tr><th>Product</th><th>Clicks</th></tr></thead>
+            <tbody>
+              <% topProducts.forEach(function(p){ %><tr><td><a href="/product/<%= p.slug %>" target="_blank"><%= p.name_en %></a></td><td><%= p.clicks %></td></tr><% }); %>
+              <% if (!topProducts.length) { %><tr><td colspan="2" class="muted">No clicks tracked yet.</td></tr><% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <!-- Low stock alerts -->
+      <div class="panel">
+        <div class="panel-head"><h2>⚠️ Low stock</h2><a href="/admin/inventory" class="btn btn-ghost btn-sm">Manage</a></div>
+        <div class="panel-body" style="padding:0">
+          <table class="table">
+            <tbody>
+              <% lowStock.forEach(function(p){ %>
+                <tr><td><%= p.name_en %></td><td><span class="pill <%= p.stock===0?'pill-out':'pill-low' %>"><%= p.stock %></span></td></tr>
+              <% }); %>
+              <% if (!lowStock.length) { %><tr><td class="muted">All stocked up ✅</td></tr><% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Top searches -->
+      <div class="panel">
+        <div class="panel-head"><h2>Top searches</h2></div>
+        <div class="panel-body" style="padding:0">
+          <table class="table">
+            <tbody>
+              <% topSearches.forEach(function(s){ %><tr><td><%= s.query %></td><td><%= s.c %></td></tr><% }); %>
+              <% if (!topSearches.length) { %><tr><td class="muted">No searches yet.</td></tr><% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+<%- include('./_layout-close') %>

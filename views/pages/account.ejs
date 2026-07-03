@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="<%= locale %>" dir="<%= dir %>">
+<head><%- include('../partials/head') %></head>
+<body class="<%= bodyClass %>">
+<%- include('../partials/header') %>
+<main class="account-page">
+  <div class="wrap">
+    <h1><%= t('my_account') %></h1>
+    <p class="sec-sub" style="margin:0 0 6px;text-align:start">Hi <%= user.name %> 👋</p>
+    <form method="post" action="/logout" style="margin:14px 0 30px"><input type="hidden" name="_csrf" value="<%= csrfToken %>" /><button class="btn btn-ghost btn-sm"><%= t('logout') %></button></form>
+
+    <section class="account-section">
+      <h2><%= t('wishlist_title') %> (<%= wishlist.length %>)</h2>
+      <% if (!wishlist.length) { %><p class="muted">Your wishlist is empty. <a href="/shop">Browse products →</a></p><% } else { %>
+      <div class="product-grid">
+        <% wishlist.forEach(function(product){ %><%- include('../partials/product-card', { product: product, wishlistIds: wishlist.map(function(w){return w.id;}) }) %><% }); %>
+      </div>
+      <% } %>
+    </section>
+
+    <section class="account-section">
+      <h2><%= t('recently_viewed') %></h2>
+      <% if (!recent.length) { %><p class="muted">Nothing yet.</p><% } else { %>
+      <div class="product-grid">
+        <% recent.forEach(function(product){ %><%- include('../partials/product-card', { product: product, wishlistIds: wishlist.map(function(w){return w.id;}) }) %><% }); %>
+      </div>
+      <% } %>
+    </section>
+
+    <% if (compare.length) { %>
+    <section class="account-section">
+      <h2><%= t('compare_title') %> (<%= compare.length %>)</h2>
+      <a href="/compare" class="btn btn-ghost-gold btn-sm">Open comparison →</a>
+    </section>
+    <% } %>
+  </div>
+</main>
+<%- include('../partials/footer') %>
+<%- include('../partials/scripts') %>
+</body>
+</html>

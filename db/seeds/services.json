@@ -1,0 +1,62 @@
+[
+  {
+    "slug": "printing-photocopy",
+    "name_en": "Printing & Photocopy",
+    "name_fr": "Impression & Photocopie",
+    "name_ar": "طباعة ونسخ",
+    "desc_en": "Documents, photos, ID copies — fast and clean.",
+    "desc_fr": "Documents, photos, copies — rapide et net.",
+    "desc_ar": "مستندات، صور، نسخ الهوية — بسرعة وجودة.",
+    "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#fff\" stroke-width=\"1.6\"><path d=\"M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v8H6z\"/></svg>"
+  },
+  {
+    "slug": "official-documents",
+    "name_en": "Official Documents",
+    "name_fr": "Documents officiels",
+    "name_ar": "الوثائق الرسمية",
+    "desc_en": "Help with online forms & administrative paperwork.",
+    "desc_fr": "Aide pour formulaires en ligne & démarches.",
+    "desc_ar": "مساعدة في الاستمارات والمعاملات الإدارية.",
+    "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#fff\" stroke-width=\"1.6\"><path d=\"M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z\"/><path d=\"M14 2v6h6M9 13h6M9 17h6\"/></svg>"
+  },
+  {
+    "slug": "phone-software-flashing",
+    "name_en": "Phone Software & Flashing",
+    "name_fr": "Logiciel & Flash téléphone",
+    "name_ar": "برمجة وفلاش الهواتف",
+    "desc_en": "Updates, unlocking, software fixes & setup.",
+    "desc_fr": "Mises à jour, déblocage, réparation logicielle.",
+    "desc_ar": "تحديثات، فك القفل، إصلاح البرامج والإعداد.",
+    "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#fff\" stroke-width=\"1.6\"><rect x=\"7\" y=\"2\" width=\"10\" height=\"20\" rx=\"2\"/><path d=\"M12 7v4l2 1\"/></svg>"
+  },
+  {
+    "slug": "account-app-setup",
+    "name_en": "Account & App Setup",
+    "name_fr": "Création de comptes & apps",
+    "name_ar": "إنشاء الحسابات والتطبيقات",
+    "desc_en": "Email, social, payment apps — set up correctly.",
+    "desc_fr": "E-mail, réseaux, apps de paiement — bien configurés.",
+    "desc_ar": "بريد، تواصل اجتماعي، تطبيقات دفع — إعداد صحيح.",
+    "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#fff\" stroke-width=\"1.6\"><circle cx=\"12\" cy=\"8\" r=\"4\"/><path d=\"M4 21a8 8 0 0 1 16 0\"/></svg>"
+  },
+  {
+    "slug": "recharge-top-ups",
+    "name_en": "Recharge & Top-ups",
+    "name_fr": "Recharge & Crédit",
+    "name_ar": "تعبئة الرصيد",
+    "desc_en": "Mobile credit, internet & digital top-ups.",
+    "desc_fr": "Crédit mobile, internet & recharges.",
+    "desc_ar": "رصيد الهاتف، الإنترنت والتعبئة الرقمية.",
+    "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#fff\" stroke-width=\"1.6\"><path d=\"M13 2 4 14h7l-1 8 9-12h-7z\"/></svg>"
+  },
+  {
+    "slug": "data-transfer-backup",
+    "name_en": "Data Transfer & Backup",
+    "name_fr": "Transfert & Sauvegarde",
+    "name_ar": "نقل البيانات والنسخ الاحتياطي",
+    "desc_en": "Move photos, contacts & files safely between devices.",
+    "desc_fr": "Transférez photos, contacts & fichiers en sécurité.",
+    "desc_ar": "نقل الصور وجهات الاتصال والملفات بأمان.",
+    "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#fff\" stroke-width=\"1.6\"><path d=\"M4 7h13l-3-3M20 17H7l3 3\"/></svg>"
+  }
+]

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="<%= locale %>" dir="<%= dir %>">
+<head><%- include('../partials/head') %></head>
+<body class="<%= bodyClass %>">
+<%- include('../partials/header') %>
+
+<main>
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="home">
+    <div class="wrap hero-grid">
+      <div class="hero-text reveal">
+        <span class="hero-pill"><span class="dot"></span><%= t('hero_pill') %></span>
+        <h1><%= t('hero_title') %></h1>
+        <p class="hero-sub"><%= t('hero_sub') %></p>
+        <div class="hero-cta">
+          <a href="/shop" class="btn btn-gold"><%= t('hero_browse') %></a>
+          <a class="btn btn-ghost-gold wa-track" data-wa-key="order"
+             href="https://wa.me/<%= settings.whatsapp_number %>?text=<%= encodeURIComponent("Hi LamsaDZ! 👋 I'd like to place an order.") %>" target="_blank" rel="noopener"><%= t('hero_order') %></a>
+        </div>
+        <div class="hero-stats">
+          <div><strong><%= productCount %>+</strong><span><%= t('stat_products') %></span></div>
+          <div><strong>1000+</strong><span><%= t('stat_customers') %></span></div>
+          <div><strong>58</strong><span><%= t('stat_delivery') %></span></div>
+        </div>
+      </div>
+      <div class="hero-visual reveal reveal-scale">
+        <div class="hero-card">
+          <img src="/img/logo.png" alt="<%= settings.store_name %>" width="90" height="90" />
+          <div class="hero-card-badges">
+            <span>📱 <%= t('nav_shop') %></span>
+            <span>⚡ <%= t('badge_delivery') %></span>
+            <span>🛡️ <%= t('badge_warranty') %></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CATEGORIES ============ -->
+  <section id="categories">
+    <div class="wrap">
+      <div class="sec-head"><div class="gold-line"></div>
+        <h2><%= t('cat_title') %></h2>
+        <p class="sec-sub"><%= t('cat_sub') %></p>
+      </div>
+      <div class="cat-grid">
+        <% categories.forEach(function(c, i){ %>
+          <a class="cat-card reveal d<%= (i%4)+1 %>" href="/shop?category=<%= c.slug %>">
+            <div class="cat-icon">
+              <%- include('../partials/cat-icon', { name: c.icon }) %>
+            </div>
+            <h3><%= field(c, 'name') %></h3>
+            <p><%= field(c, 'desc') %></p>
+            <span class="cat-count"><%= c.product_count %> <%= t('nav_shop').toLowerCase() %></span>
+          </a>
+        <% }); %>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FEATURED ============ -->
+  <section id="featured" style="background:var(--bg-warm)">
+    <div class="wrap">
+      <div class="sec-head"><div class="gold-line"></div>
+        <h2><%= t('featured_title') %></h2>
+        <p class="sec-sub"><%= t('featured_sub') %></p>
+      </div>
+      <div class="product-grid">
+        <% featured.forEach(function(product){ %>
+          <%- include('../partials/product-card', { product: product, wishlistIds: wishlistIds }) %>
+        <% }); %>
+      </div>
+      <div class="center-cta"><a href="/shop" class="btn btn-ghost-gold"><%= t('shop_title') %> →</a></div>
+    </div>
+  </section>
+
+  <!-- ============ WHY / TRUST ============ -->
+  <section id="why">
+    <div class="wrap">
+      <div class="sec-head"><div class="gold-line"></div><h2><%= t('why_title') %></h2></div>
+      <div class="why-grid">
+        <div class="why-card reveal d1"><div class="why-ic">✔</div><h4><%= t('trust_genuine') %></h4><p><%= t('trust_genuine_d') %></p></div>
+        <div class="why-card reveal d2"><div class="why-ic">⚡</div><h4><%= t('trust_fast') %></h4><p><%= t('trust_fast_d') %></p></div>
+        <div class="why-card reveal d3"><div class="why-ic">💰</div><h4><%= t('trust_fair') %></h4><p><%= t('trust_fair_d') %></p></div>
+        <div class="why-card reveal d4"><div class="why-ic">📲</div><h4><%= t('trust_easy') %></h4><p><%= t('trust_easy_d') %></p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SERVICES ============ -->
+  <section class="services" id="services">
+    <div class="wrap">
+      <div class="sec-head"><div class="gold-line"></div>
+        <h2><%= t('srv_title') %></h2>
+        <p class="sec-sub sec-sub-light"><%= t('srv_sub') %></p>
+      </div>
+      <div class="srv-grid">
+        <% services.forEach(function(s, i){ %>
+          <div class="srv-card reveal d<%= (i%3)+1 %>">
+            <div class="srv-icon"><%- s.icon %></div>
+            <h4><%= field(s, 'name') %></h4>
+            <p><%= field(s, 'desc') %></p>
+            <a class="srv-ask wa-track" data-wa-key="find"
+               href="https://wa.me/<%= settings.whatsapp_number %>?text=<%= encodeURIComponent('Hi LamsaDZ! 👋 I want to ask about: ' + field(s,'name')) %>" target="_blank" rel="noopener"><%= t('srv_ask') %> →</a>
+          </div>
+        <% }); %>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TESTIMONIALS ============ -->
+  <section id="testimonials" style="background:var(--bg-warm)">
+    <div class="wrap">
+      <div class="sec-head"><div class="gold-line"></div><h2><%= t('testimonials_title') %></h2></div>
+      <div class="testi-grid">
+        <% testimonials.forEach(function(tm, i){ %>
+          <figure class="testi-card reveal d<%= (i%3)+1 %>">
+            <div class="stars"><% for(var s=0;s<tm.rating;s++){ %>★<% } %></div>
+            <blockquote><%= field(tm, 'body') %></blockquote>
+            <figcaption><strong><%= tm.author_name %></strong><% if(tm.location){ %><span> · <%= tm.location %></span><% } %></figcaption>
+          </figure>
+        <% }); %>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section id="faq">
+    <div class="wrap wrap-narrow">
+      <div class="sec-head"><div class="gold-line"></div><h2><%= t('faq_title') %></h2></div>
+      <div class="faq-list">
+        <% faqs.forEach(function(f){ %>
+          <details class="faq-item">
+            <summary><%= field(f, 'q') %></summary>
+            <div class="faq-answer"><%= field(f, 'a') %></div>
+          </details>
+        <% }); %>
+      </div>
+      <div class="center-cta"><a href="/faq" class="btn btn-ghost-gold"><%= t('nav_faq') %> →</a></div>
+    </div>
+  </section>
+
+  <!-- ============ CTA ============ -->
+  <section class="cta-band">
+    <div class="wrap reveal">
+      <h2><%= t('cta_title') %></h2>
+      <p><%= t('cta_sub') %></p>
+      <a class="btn btn-gold wa-track" data-wa-key="find"
+         href="https://wa.me/<%= settings.whatsapp_number %>?text=<%= encodeURIComponent("Hi LamsaDZ! 👋 I'm looking for a specific product. Can you help?") %>" target="_blank" rel="noopener"><%= t('cta_btn') %></a>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section id="contact" style="background:var(--bg-warm)">
+    <div class="wrap">
+      <div class="sec-head"><div class="gold-line"></div><h2><%= t('contact_title') %></h2></div>
+      <div class="contact-grid">
+        <div class="contact-list">
+          <div class="ci"><div class="ic">📍</div><div><h4><%= t('c_store') %></h4><p><%= settings.store_address %></p></div></div>
+          <div class="ci"><div class="ic">📞</div><div><h4><%= t('c_phone') %></h4><p><%= settings.store_phone %></p></div></div>
+          <div class="ci"><div class="ic">🕒</div><div><h4><%= t('c_hours') %></h4><p><%= settings.store_hours %></p></div></div>
+
+          <form class="contact-form" id="contactForm">
+            <input type="text" name="name" placeholder="Name" required />
+            <input type="text" name="phone" placeholder="Phone (optional)" />
+            <textarea name="body" placeholder="Your message" rows="3" required></textarea>
+            <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+            <button type="submit" class="btn btn-gold"><%= t('c_msg') %></button>
+            <p class="form-msg" id="contactMsg" aria-live="polite"></p>
+          </form>
+        </div>
+        <a class="map-card" href="https://maps.app.goo.gl/3J4JMYAgZX1HovJTA" target="_blank" rel="noopener">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--gold-dark)" stroke-width="1.5"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <p><b><%= settings.store_address %></b><br/><span><%= t('map') %></span></p>
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<%- include('../partials/footer') %>
+<%- include('../partials/wa-float') %>
+<%- include('../partials/scripts') %>
+
+<!-- FAQ structured data for rich results -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    <% faqs.forEach(function(f, i){ %>
+    {
+      "@type": "Question",
+      "name": <%- JSON.stringify(field(f, 'q')) %>,
+      "acceptedAnswer": { "@type": "Answer", "text": <%- JSON.stringify(field(f, 'a')) %> }
+    }<%= i < faqs.length - 1 ? ',' : '' %>
+    <% }); %>
+  ]
+}
+</script>
+</body>
+</html>

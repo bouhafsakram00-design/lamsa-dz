@@ -1,0 +1,26 @@
+[
+  {
+    "slug": "phones",
+    "name_en": "Phones", "name_fr": "Téléphones", "name_ar": "هواتف",
+    "desc_en": "Smartphones & feature phones", "desc_fr": "Smartphones & téléphones", "desc_ar": "هواتف ذكية وعادية",
+    "icon": "phone", "sort_order": 1
+  },
+  {
+    "slug": "accessories",
+    "name_en": "Accessories", "name_fr": "Accessoires", "name_ar": "إكسسوارات",
+    "desc_en": "Cases, earbuds, watches", "desc_fr": "Coques, écouteurs, montres", "desc_ar": "أغطية، سماعات، ساعات",
+    "icon": "headphones", "sort_order": 2
+  },
+  {
+    "slug": "cables-chargers",
+    "name_en": "Cables & Chargers", "name_fr": "Câbles & Chargeurs", "name_ar": "كابلات وشواحن",
+    "desc_en": "Fast charging, power banks", "desc_fr": "Charge rapide, power banks", "desc_ar": "شحن سريع، بطاريات محمولة",
+    "icon": "bolt", "sort_order": 3
+  },
+  {
+    "slug": "pc-computing",
+    "name_en": "PC & Computing", "name_fr": "PC & Informatique", "name_ar": "حواسيب ومكوناتها",
+    "desc_en": "Mice, keyboards, storage", "desc_fr": "Souris, claviers, stockage", "desc_ar": "فأرة، لوحات مفاتيح، تخزين",
+    "icon": "monitor", "sort_order": 4
+  }
+]

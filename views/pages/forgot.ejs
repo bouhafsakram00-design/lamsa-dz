@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="<%= locale %>" dir="<%= dir %>">
+<head><%- include('../partials/head') %></head>
+<body class="<%= bodyClass %>">
+<%- include('../partials/header') %>
+<main>
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <h1>Reset password</h1>
+      <% if (sent) { %>
+        <p class="sub">If an account exists, a reset link has been generated.</p>
+        <% if (token) { %>
+          <div class="auth-error" style="background:#fff7e0;color:#7a5a00">
+            Demo mode (no email server configured): use this link to reset now:<br/>
+            <a href="/reset?token=<%= token %>" style="word-break:break-all">/reset?token=<%= token %></a>
+          </div>
+        <% } %>
+        <p class="auth-alt"><a href="/login">Back to login</a></p>
+      <% } else { %>
+        <p class="sub">Enter your email to receive a reset link.</p>
+        <% (errors||[]).forEach(function(e){ %><div class="auth-error"><%= e.msg %></div><% }); %>
+        <form class="auth-form" method="post" action="/forgot">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+          <input type="email" name="email" placeholder="Email" required />
+          <button type="submit" class="btn btn-gold btn-block">Send reset link</button>
+        </form>
+        <p class="auth-alt"><a href="/login">Back to login</a></p>
+      <% } %>
+    </div>
+  </div>
+</main>
+<%- include('../partials/footer') %>
+<%- include('../partials/scripts') %>
+</body>
+</html>

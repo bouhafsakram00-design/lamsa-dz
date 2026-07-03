@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="<%= locale %>" dir="<%= dir %>">
+<head><%- include('../partials/head') %></head>
+<body class="<%= bodyClass %>">
+<%- include('../partials/header') %>
+<main class="account-page">
+  <div class="wrap">
+    <h1><%= t('wishlist_title') %></h1>
+    <% if (!wishlist.length) { %>
+      <p class="muted" style="margin-top:14px">Your wishlist is empty. <a href="/shop">Browse products →</a></p>
+    <% } else { %>
+      <div class="product-grid" style="margin-top:20px">
+        <% wishlist.forEach(function(product){ %><%- include('../partials/product-card', { product: product, wishlistIds: wishlistIds }) %><% }); %>
+      </div>
+    <% } %>
+  </div>
+</main>
+<%- include('../partials/footer') %>
+<%- include('../partials/wa-float') %>
+<%- include('../partials/scripts') %>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title><%= typeof pageTitle !== 'undefined' ? pageTitle : (settings.store_name || 'LamsaDZ') %></title>
+<meta name="description" content="<%= typeof metaDescription !== 'undefined' ? metaDescription : '' %>" />
+<% if (typeof canonical !== 'undefined' && canonical) { %><link rel="canonical" href="<%= canonical %>" /><% } %>
+<meta name="theme-color" content="#c9a84c" />
+<meta name="robots" content="index, follow" />
+
+<!-- Open Graph / social -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="<%= settings.store_name %>" />
+<meta property="og:title" content="<%= typeof pageTitle !== 'undefined' ? pageTitle : settings.store_name %>" />
+<meta property="og:description" content="<%= typeof metaDescription !== 'undefined' ? metaDescription : '' %>" />
+<% if (typeof canonical !== 'undefined' && canonical) { %><meta property="og:url" content="<%= canonical %>" /><% } %>
+<meta property="og:image" content="<%= config.siteUrl %>/img/logo.png" />
+<meta name="twitter:card" content="summary" />
+
+<!-- CSRF token for JS (header-based) -->
+<meta name="csrf-token" content="<%= typeof csrfToken !== 'undefined' ? csrfToken : '' %>" />
+
+<link rel="icon" type="image/jpeg" href="/img/favicon.jpg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700;800&display=swap" />
+<link rel="stylesheet" href="/css/theme.css" />
+<link rel="stylesheet" href="/css/app.css" />
+
+<!-- Organization + LocalBusiness structured data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ElectronicsStore",
+  "name": "<%= settings.store_name %>",
+  "image": "<%= config.siteUrl %>/img/logo.png",
+  "url": "<%= config.siteUrl %>",
+  "telephone": "<%= settings.store_phone %>",
+  "email": "<%= settings.store_email %>",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "<%= settings.store_address %>",
+    "addressCountry": "DZ"
+  },
+  "priceRange": "DA",
+  "openingHours": "Mo-Su 09:00-22:00"
+}
+</script>
+
+<% if (config.gaId) { %>
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=<%= config.gaId %>"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', '<%= config.gaId %>');
+</script>
+<% } %>

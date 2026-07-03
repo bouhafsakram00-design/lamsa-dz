@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="<%= locale %>" dir="<%= dir %>">
+<head><%- include('../partials/head') %></head>
+<body class="<%= bodyClass %>">
+<%- include('../partials/header') %>
+<main class="account-page">
+  <div class="wrap">
+    <h1><%= t('compare_title') %></h1>
+    <% if (!compare.length) { %>
+      <p class="muted" style="margin-top:14px">No products to compare. Add up to 4 from any product page.</p>
+    <% } else { %>
+      <div style="overflow-x:auto;margin-top:20px">
+      <table class="compare-table">
+        <tr><th>Feature</th><% compare.forEach(function(p){ %><th><%= field(p,'name') %></th><% }); %></tr>
+        <tr><td>Image</td><% compare.forEach(function(p){ %><td><% if(p.image){ %><img src="<%= p.image %>" alt="" style="width:80px;border-radius:8px"><% } %></td><% }); %></tr>
+        <tr><td>Price</td><% compare.forEach(function(p){ %><td><strong><%= helpers.formatDA(p.price) %></strong></td><% }); %></tr>
+        <tr><td>Stock</td><% compare.forEach(function(p){ %><td><%= p.in_stock ? t('in_stock') : t('out_of_stock') %></td><% }); %></tr>
+        <tr><td>Description</td><% compare.forEach(function(p){ %><td><%= helpers.truncate(field(p,'desc'),100) %></td><% }); %></tr>
+        <tr><td>Order</td><% compare.forEach(function(p){ %><td><a class="btn btn-wa btn-sm wa-track" data-wa-key="order" data-product-id="<%= p.id %>" href="https://wa.me/<%= settings.whatsapp_number %>?text=<%= encodeURIComponent('Order: '+field(p,'name')) %>" target="_blank" rel="noopener"><%= t('order_btn') %></a></td><% }); %></tr>
+      </table>
+      </div>
+    <% } %>
+  </div>
+</main>
+<%- include('../partials/footer') %>
+<%- include('../partials/scripts') %>
+</body>
+</html>
