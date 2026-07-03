@@ -29,8 +29,6 @@
 
   <!-- ============ HERO ============ -->
   <section class="hero" id="home">
-    <!-- 3D scene canvas (progressively enhanced; hidden until ready, image stays as fallback) -->
-    <canvas id="hero3d" class="hero-3d-canvas" aria-hidden="true"></canvas>
     <div class="wrap hero-grid">
       <div class="hero-text reveal">
         <span class="hero-pill"><span class="dot"></span><%= t('hero_pill') %></span>
@@ -225,8 +223,6 @@
 <%- include('../partials/footer') %>
 <%- include('../partials/wa-float') %>
 <%- include('../partials/scripts') %>
-<!-- Cinematic 3D hero (homepage only; auto-fallbacks to the static hero on mobile/slow devices) -->
-<script src="/js/hero3d.js" defer></script>
 
 <!-- FAQ structured data for rich results -->
 <script type="application/ld+json">
