@@ -1,0 +1,243 @@
+/* ============================================================
+   LamsaDZ — PREMIUM THEME (Deep Blue · Black · Silver)
+   Luxury tech-brand redesign inspired by Apple / Nothing / Samsung / Tesla.
+   Loaded LAST so it overrides theme.css + app.css + enhance.css.
+   Functionality untouched — visual identity only.
+   ============================================================ */
+
+:root {
+  /* --- New luxury palette --- */
+  --p-blue:      #0F4C81;
+  --p-blue-deep: #0a3560;
+  --p-blue-glow: rgba(15, 76, 129, .35);
+  --p-black:     #0A0A0A;
+  --p-ink:       #0A0F1A;
+  --p-ink-soft:  #5b6472;
+  --p-silver:    #C0C0C0;
+  --p-silver-lt: #e7eaee;
+  --p-white:     #ffffff;
+  --p-gray:      #F8F9FA;
+  --p-line:      #e8ecf1;
+
+  /* Override the old gold variables so existing classes adopt the new theme */
+  --bg:        #ffffff;
+  --bg-soft:   #F8F9FA;
+  --bg-warm:   #f4f7fb;
+  --ink:       #0A0F1A;
+  --ink-soft:  #5b6472;
+  --line:      #e8ecf1;
+  --gold:        #0F4C81;
+  --gold-light:  #2f6fa8;
+  --gold-dark:   #0a3560;
+  --gold-ultra:  #cfe0f0;
+  --gold-glow:   rgba(15,76,129,.14);
+  --shadow:      0 10px 40px rgba(10,15,26,.08);
+  --shadow-lg:   0 30px 70px rgba(10,15,26,.16);
+  --shadow-gold: 0 12px 40px rgba(15,76,129,.30);
+  --radius: 20px;
+}
+
+/* --- Premium typography --- */
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: var(--p-ink);
+  letter-spacing: -0.01em;
+  background: var(--p-white);
+}
+h1, h2, h3, .logo { font-family: 'Inter', sans-serif; letter-spacing: -0.03em; font-weight: 800; }
+h1 { line-height: 1.04; }
+.sec-head h2 { font-family: 'Inter', sans-serif; font-weight: 800; letter-spacing: -0.03em; }
+.hero-text h1 { font-family: 'Inter', sans-serif; font-weight: 800; }
+
+/* Generous whitespace */
+section { padding: 96px 0; }
+@media (max-width: 720px){ section { padding: 60px 0; } }
+
+/* ============ BUTTONS — premium pill/solid ============ */
+.btn { border-radius: 14px; font-weight: 600; letter-spacing: -0.01em; padding: 14px 28px; }
+.btn-gold, .btn-brand {
+  background: var(--p-ink);
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(10,15,26,.18);
+}
+.btn-gold:hover, .btn-brand:hover { background: var(--p-blue); filter: none; box-shadow: 0 12px 32px var(--p-blue-glow); }
+.btn-ghost-gold {
+  background: rgba(255,255,255,.6); color: var(--p-ink);
+  border: 1px solid var(--p-line); backdrop-filter: blur(8px);
+}
+.btn-ghost-gold:hover { background: #fff; border-color: var(--p-blue); color: var(--p-blue); }
+.btn-wa { background: #25d366; border-radius: 14px; }
+.btn-wa:hover { background: #1da851; }
+
+/* ============ HEADER — transparent → glass on scroll ============ */
+.site-header {
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background .4s ease, border-color .4s ease, box-shadow .4s ease, backdrop-filter .4s;
+}
+.site-header.scrolled {
+  background: rgba(255,255,255,.72);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid var(--p-line);
+  box-shadow: 0 4px 30px rgba(10,15,26,.06);
+}
+.logo-dz { color: var(--p-blue); }
+.nav-links a { color: var(--p-ink-soft); font-weight: 500; }
+.nav-links a:hover { color: var(--p-blue); }
+.nav-links a::after { background: var(--p-blue); }
+.icon-btn { border-radius: 12px; border-color: var(--p-line); }
+.icon-btn:hover { border-color: var(--p-blue); color: var(--p-blue); }
+
+/* ============ HERO — cinematic ============ */
+.hero {
+  position: relative;
+  background: linear-gradient(120deg, #0A0F1A 0%, #0F4C81 60%, #0a3560 100%);
+  color: #fff;
+  padding: 150px 0 110px;
+  overflow: hidden;
+}
+.hero::before {
+  content: ""; position: absolute; inset: 0;
+  background: url('/img/hero-premium.webp') no-repeat center right / cover;
+  opacity: .9;
+}
+.hero::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(90deg, #0A0F1A 8%, rgba(10,15,26,.5) 42%, transparent 70%);
+}
+.hero .wrap { position: relative; z-index: 3; }
+.hero-grid { align-items: center; }
+.hero-text h1 { color: #fff; font-size: clamp(38px, 6vw, 68px); }
+.hero-sub { color: rgba(255,255,255,.82); font-size: 19px; }
+.hero-pill {
+  background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
+  color: #fff; backdrop-filter: blur(10px);
+}
+.hero-stats { border-top: 1px solid rgba(255,255,255,.16); }
+.hero-stats strong { color: #fff; font-family: 'Inter', sans-serif; }
+.hero-stats span { color: rgba(255,255,255,.7); }
+.hero-cta .btn-gold { background: #fff; color: var(--p-ink); }
+.hero-cta .btn-gold:hover { background: var(--p-silver-lt); }
+.hero-cta .btn-ghost-gold { background: rgba(255,255,255,.08); color: #fff; border-color: rgba(255,255,255,.3); }
+.hero-cta .btn-ghost-gold:hover { background: rgba(255,255,255,.16); }
+/* Hide the old hero card — the background image is the visual now */
+.hero-visual { display: none; }
+@media (max-width: 980px){
+  .hero { padding: 120px 0 70px; }
+  .hero::after { background: linear-gradient(180deg, rgba(10,15,26,.7), rgba(10,15,26,.55)); }
+  .hero-grid { grid-template-columns: 1fr; }
+}
+
+/* ============ SECTION HEADINGS ============ */
+.gold-line { background: linear-gradient(90deg, transparent, var(--p-blue), transparent); }
+.kicker { color: var(--p-blue); letter-spacing: .18em; font-weight: 700; }
+
+/* ============ CATEGORY CARDS — glass & depth ============ */
+.cat-card {
+  border-radius: var(--radius);
+  border: 1px solid var(--p-line);
+  background: linear-gradient(160deg, #fff, var(--p-gray));
+  box-shadow: 0 4px 20px rgba(10,15,26,.04);
+}
+.cat-card:hover { box-shadow: var(--shadow); border-color: var(--p-blue); transform: translateY(-8px); }
+.cat-icon { background: linear-gradient(135deg, rgba(15,76,129,.12), rgba(15,76,129,.04)); color: var(--p-blue); border-radius: 16px; }
+.cat-count { background: var(--p-gray); color: var(--p-blue); }
+
+/* ============ PRODUCT CARDS — premium ============ */
+.product-card {
+  border-radius: var(--radius);
+  border: 1px solid var(--p-line);
+  background: #fff;
+  box-shadow: 0 4px 20px rgba(10,15,26,.05);
+}
+.product-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-10px); border-color: rgba(15,76,129,.4); }
+.product-media { background: var(--p-gray); }
+.price-row .price { color: var(--p-ink); font-weight: 800; letter-spacing: -0.02em; }
+.tag { background: var(--p-ink); color: #fff; font-weight: 600; border-radius: 8px; }
+.tag-new { background: var(--p-blue); color: #fff; }
+.tag-discount { background: #e11d48; color: #fff; }
+.stock-in { background: rgba(15,76,129,.1); color: var(--p-blue); }
+.wish-btn { background: rgba(255,255,255,.9); color: var(--p-blue); backdrop-filter: blur(6px); }
+.wish-btn.active { color: #e11d48; }
+
+/* ============ WHY / TRUST cards ============ */
+.why-card { border-radius: var(--radius); border: 1px solid var(--p-line); background: linear-gradient(160deg,#fff,var(--p-gray)); }
+.why-card:hover { box-shadow: var(--shadow); transform: translateY(-6px); }
+.why-ic { background: linear-gradient(135deg, rgba(15,76,129,.14), rgba(15,76,129,.04)); color: var(--p-blue); }
+
+/* ============ SERVICES — deep luxury band ============ */
+.services {
+  background: linear-gradient(150deg, #0A0F1A, #0F4C81 140%);
+  position: relative;
+}
+.services::before {
+  content: ""; position: absolute; inset: 0;
+  background: url('/img/section-bg.webp') center/cover no-repeat; opacity: .25;
+}
+.services .wrap { position: relative; z-index: 2; }
+.srv-card {
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: var(--radius);
+  backdrop-filter: blur(12px);
+  transition: transform .35s cubic-bezier(.22,1,.36,1), background .3s;
+}
+.srv-card:hover { transform: translateY(-8px); background: rgba(255,255,255,.1); }
+.srv-icon { background: linear-gradient(135deg, var(--p-blue), var(--p-blue-deep)); border-radius: 14px; }
+.srv-ask { color: var(--p-silver-lt); }
+
+/* ============ TESTIMONIALS ============ */
+.testi-card { border-radius: var(--radius); border: 1px solid var(--p-line); background: linear-gradient(160deg,#fff,var(--p-gray)); }
+.testi-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-8px); }
+.stars { color: var(--p-blue); }
+
+/* ============ FAQ ============ */
+.faq-item { border-radius: 16px; border: 1px solid var(--p-line); }
+.faq-item[open] { border-color: var(--p-blue); box-shadow: var(--shadow); }
+.faq-item summary::after { color: var(--p-blue); }
+
+/* ============ CTA band — dark luxury ============ */
+.cta-band {
+  background: linear-gradient(120deg, #0A0F1A, #0F4C81);
+  color: #fff; position: relative; overflow: hidden;
+}
+.cta-band::before { content:""; position:absolute; inset:0; background:url('/img/section-bg.webp') center/cover; opacity:.2; }
+.cta-band .wrap { position: relative; z-index: 2; }
+.cta-band h2 { color: #fff; }
+.cta-band p { color: rgba(255,255,255,.8); }
+.cta-band .btn-gold { background: #fff; color: var(--p-ink); }
+.cta-band .btn-gold:hover { background: var(--p-silver-lt); }
+
+/* ============ CONTACT ============ */
+.ci .ic { background: linear-gradient(135deg, rgba(15,76,129,.14), rgba(15,76,129,.04)); }
+.map-card { border-radius: var(--radius); border: 1px solid var(--p-line); }
+.contact-form input:focus, .contact-form textarea:focus { outline-color: var(--p-blue); border-color: var(--p-blue); }
+
+/* ============ FOOTER — deep black ============ */
+.site-footer { background: #05070c; }
+.trust-badge { background: rgba(255,255,255,.04); border-color: rgba(15,76,129,.4); }
+.trust-badge svg { color: var(--p-silver); }
+.trust-badge:hover { border-color: var(--p-blue); }
+.foot-col a:hover { color: var(--p-silver-lt); }
+.credit strong { color: var(--p-silver); }
+.logo-dz { color: #4d8fc7; }
+
+/* ============ WHATSAPP FLOAT ============ */
+.wa-float { box-shadow: 0 12px 34px rgba(37,211,102,.4); }
+
+/* ============ SHOP / PRODUCT pages ============ */
+.shop-hero h1, .pd-info h1, .doc-page h1, .account-page h1 { font-family: 'Inter', sans-serif; letter-spacing: -0.03em; }
+.filter-link.active { background: rgba(15,76,129,.1); color: var(--p-blue); }
+.pagination a.active, .pagination a:hover { background: var(--p-blue); color: #fff; border-color: var(--p-blue); }
+.pd-price .price { color: var(--p-ink); }
+.save-badge { background: rgba(225,29,72,.1); color: #e11d48; }
+.btn-lg { border-radius: 14px; }
+
+/* ============ AUTH / cards general ============ */
+.auth-card, .doc-block { border-radius: var(--radius); }
+.auth-form input:focus { outline-color: var(--p-blue); border-color: var(--p-blue); }
+.auth-alt a { color: var(--p-blue); }
+
+/* ============ Selection + scrollbar polish ============ */
+::selection { background: var(--p-blue); color: #fff; }

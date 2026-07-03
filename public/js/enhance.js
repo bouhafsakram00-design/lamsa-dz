@@ -110,3 +110,46 @@
     document.head.appendChild(style);
   }
 })();
+
+/* ============================================================
+   PREMIUM redesign interactions (header glass, parallax, tilt)
+   ============================================================ */
+(function () {
+  'use strict';
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Header: transparent at top → glass on scroll */
+  var header = document.querySelector('.site-header');
+  if (header) {
+    var onScrollHeader = function () {
+      header.classList.toggle('scrolled', window.scrollY > 30);
+    };
+    window.addEventListener('scroll', onScrollHeader, { passive: true });
+    onScrollHeader();
+  }
+
+  if (reduce) return;
+
+  /* Subtle parallax on the hero background as you scroll */
+  var hero = document.querySelector('.hero');
+  if (hero) {
+    window.addEventListener('scroll', function () {
+      var y = window.scrollY;
+      if (y < 700) hero.style.backgroundPosition = 'center ' + (y * 0.15) + 'px';
+    }, { passive: true });
+  }
+
+  /* Premium 3D tilt on product cards (mouse-follow depth) */
+  var cards = document.querySelectorAll('.product-card, .cat-card');
+  cards.forEach(function (card) {
+    card.addEventListener('mousemove', function (e) {
+      var r = card.getBoundingClientRect();
+      var cx = (e.clientX - r.left) / r.width - 0.5;
+      var cy = (e.clientY - r.top) / r.height - 0.5;
+      card.style.transform = 'translateY(-8px) perspective(900px) rotateX(' + (-cy * 4) + 'deg) rotateY(' + (cx * 4) + 'deg)';
+    });
+    card.addEventListener('mouseleave', function () {
+      card.style.transform = '';
+    });
+  });
+})();
