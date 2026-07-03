@@ -20,6 +20,7 @@ router.get('/inventory', admin.inventory);
 router.get('/reviews', admin.reviews);
 router.get('/messages', admin.messages);
 router.get('/settings', admin.settings);
+router.get('/account', admin.accountPage);
 
 // ---- Product create/update (multipart): multer FIRST, then CSRF verify, then validate ----
 router.post('/products', upload.array('images', 6), verifyToken, v.productRules, v.handleValidation, admin.saveProduct);
@@ -33,5 +34,6 @@ router.post('/reviews/:id/approve', verifyToken, admin.approveReview);
 router.post('/reviews/:id/delete', verifyToken, admin.deleteReview);
 router.post('/messages/:id/read', verifyToken, admin.readMessage);
 router.post('/settings', verifyToken, admin.saveSettings);
+router.post('/account/password', verifyToken, admin.changePassword);
 
 module.exports = router;

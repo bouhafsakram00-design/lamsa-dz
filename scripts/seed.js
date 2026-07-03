@@ -154,9 +154,9 @@ function seedSampleReviews() {
   // attach a couple of approved reviews to first few products for social proof
   const prods = db.all('SELECT id FROM products ORDER BY id LIMIT 4');
   const samples = [
-    ['Bilal', 5, 'Exactly as described, works great.'],
-    ['Imene', 5, 'Fast delivery and good price.'],
-    ['Reda', 4, 'Good quality for the money.'],
+    ['Bilal', 5, 'المنتوج كيما فالتصويرة بالضبط، يخدم نيشان. الله يبارك 👌'],
+    ['Imene', 5, 'ليفريزون دغيا والسوم معقول بزاف. نصح بيهم ✅'],
+    ['Reda', 4, 'الجودة مليحة بالنسبة للسوم، راني راضي 🙏'],
   ];
   for (const p of prods) {
     const has = db.get('SELECT COUNT(*) c FROM reviews WHERE product_id=?', [p.id]).c;

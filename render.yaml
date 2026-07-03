@@ -10,29 +10,33 @@ services:
     plan: free                # change to "starter" ($7/mo) to keep it always-on
     region: frankfurt         # closest Render region to Algeria
     branch: main
-    # Install dependencies and prepare the database on every deploy
-    buildCommand: npm install && npm run migrate && npm run seed
-    startCommand: npm start
+    # Install dependencies on deploy
+    buildCommand: npm install
+    # IMPORTANT (free tier): the filesystem is wiped on every restart/wake-up,
+    # so we (re)build + seed the database right before starting the server.
+    # This guarantees your 22 products are always present. "migrate" and "seed"
+    # are both idempotent, so this is safe to run on every boot.
+    startCommand: npm run migrate && npm run seed && npm start
     healthCheckPath: /robots.txt
 
-    # A persistent disk keeps your database + uploaded product images
-    # safe across restarts and re-deploys. Without this, data would reset!
-    disk:
-      name: lamsadz-data
-      mountPath: /var/data
-      sizeGB: 1
+    # NOTE: Render's FREE tier does not support persistent disks.
+    # Without a disk, the database + uploaded images live on the temporary
+    # filesystem and RESET on every deploy/restart. That's fine for testing.
+    # On each boot we re-create the DB and reload your seed products so the
+    # site is always populated (see buildCommand above).
+    # 👉 To keep data permanently: upgrade to the "starter" plan and
+    #    re-add the disk block (see render-with-disk.yaml for the snippet).
 
     envVars:
+      # Pin Node to v20 — newer versions (e.g. 26) fail to build better-sqlite3
+      - key: NODE_VERSION
+        value: "20.18.0"
       - key: NODE_ENV
         value: production
       - key: PORT
         value: 3000
-      # Store the database + uploads on the persistent disk
-      - key: SQLITE_PATH
-        value: /var/data/lamsadz.sqlite
-      # Store uploaded product images on the persistent disk too
-      - key: UPLOADS_DIR
-        value: /var/data/uploads
+      # (Free tier: no disk — DB & uploads use the app's default local paths
+      #  and reset on each deploy. Re-seeded automatically on every build.)
       # Render auto-generates a strong random session secret for you
       - key: SESSION_SECRET
         generateValue: true

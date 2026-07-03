@@ -1,0 +1,45 @@
+============================================================
+ UPGRADE SNIPPET — Persistent disk (PAID "starter" plan only)
+============================================================
+
+The FREE tier cannot use a disk, so your data resets on each
+deploy/restart (it's auto-re-seeded, so the site is never empty,
+but admin-added products/uploads/customer accounts won't persist).
+
+When you're ready for permanent storage, do BOTH of these in render.yaml:
+
+------------------------------------------------------------
+1) Change the plan to "starter":
+
+    plan: starter        # was: free
+
+------------------------------------------------------------
+2) Add the disk block back (place it right after healthCheckPath):
+
+    disk:
+      name: lamsadz-data
+      mountPath: /var/data
+      sizeGB: 1
+
+------------------------------------------------------------
+3) Point the database + uploads at the disk by adding these
+   two envVars back under the "envVars:" list:
+
+      - key: SQLITE_PATH
+        value: /var/data/lamsadz.sqlite
+      - key: UPLOADS_DIR
+        value: /var/data/uploads
+
+------------------------------------------------------------
+4) Change the startCommand back to NOT re-seed every boot
+   (so it stops resetting your real data). Use:
+
+    buildCommand: npm install && npm run migrate && npm run seed
+    startCommand: npm start
+
+------------------------------------------------------------
+
+After editing, commit render.yaml to GitHub → Render redeploys.
+Your products, uploaded images, customers and analytics will then
+persist permanently. Cost: about $7/month for the service +
+a small amount for the 1 GB disk.

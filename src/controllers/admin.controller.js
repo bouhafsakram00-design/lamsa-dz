@@ -187,8 +187,36 @@ function analyticsPage(req, res) {
   });
 }
 
+// ---- Change password ----
+const users = require('../services/users.service');
+
+function accountPage(req, res) {
+  res.render('admin/account', {
+    layout: false, pageTitle: 'My Account — Admin',
+    error: null, success: req.query.saved === '1',
+    ...adminCommon(), active: 'account',
+  });
+}
+
+function changePassword(req, res) {
+  const { current_password, new_password, confirm_password } = req.body;
+  const render = (error) =>
+    res.status(error ? 400 : 200).render('admin/account', {
+      layout: false, pageTitle: 'My Account — Admin',
+      error, success: false, ...adminCommon(), active: 'account',
+    });
+
+  if (new_password !== confirm_password) {
+    return render('The new password and confirmation do not match.');
+  }
+  const result = users.changePassword(req.user.id, current_password, new_password);
+  if (!result.ok) return render(result.error);
+  return res.redirect('/admin/account?saved=1');
+}
+
 module.exports = {
   dashboard, products, newProduct, editProduct, saveProduct, deleteProduct, deleteProductImage,
   inventory, adjustInventory, reviews, approveReview, deleteReview,
   messages, readMessage, settings, saveSettings, analyticsPage,
+  accountPage, changePassword,
 };

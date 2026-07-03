@@ -44,4 +44,23 @@ function resetPassword(token, newPassword) {
   return true;
 }
 
-module.exports = { byEmail, byId, register, verify, createResetToken, resetPassword };
+/**
+ * Change a logged-in user's password.
+ * Requires the correct current password first (security).
+ * Returns { ok: true } or { ok: false, error }.
+ */
+function changePassword(userId, currentPassword, newPassword) {
+  const u = db.get('SELECT * FROM users WHERE id=?', [userId]);
+  if (!u) return { ok: false, error: 'User not found.' };
+  if (!bcrypt.compareSync(currentPassword, u.password_hash)) {
+    return { ok: false, error: 'Your current password is incorrect.' };
+  }
+  if (!newPassword || newPassword.length < 8) {
+    return { ok: false, error: 'New password must be at least 8 characters.' };
+  }
+  const hash = bcrypt.hashSync(newPassword, 12);
+  db.run("UPDATE users SET password_hash=?, updated_at=datetime('now') WHERE id=?", [hash, userId]);
+  return { ok: true };
+}
+
+module.exports = { byEmail, byId, register, verify, createResetToken, resetPassword, changePassword };
