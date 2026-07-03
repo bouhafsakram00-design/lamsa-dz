@@ -6,12 +6,15 @@ const i18n = require('../utils/i18n');
  * Exposes res.locals.locale, .dir, .t(), .field() for views.
  */
 module.exports = function locale(req, res, next) {
+  // 1) Respect an explicit choice (?lang=...) or a saved cookie from a prior visit.
   let loc = req.query.lang || req.cookies.lang;
+  // 2) Otherwise, honour the visitor's browser language if it is French or English.
+  // 3) Otherwise, default to Arabic (primary language for our Algerian customers).
   if (!i18n.isValid(loc)) {
     const header = (req.headers['accept-language'] || '').toLowerCase();
-    if (header.startsWith('ar')) loc = 'ar';
-    else if (header.startsWith('fr')) loc = 'fr';
-    else loc = 'en';
+    if (header.startsWith('fr')) loc = 'fr';
+    else if (header.startsWith('en')) loc = 'en';
+    else loc = 'ar';
   }
   if (req.query.lang && i18n.isValid(req.query.lang)) {
     res.cookie('lang', req.query.lang, { maxAge: 1000 * 60 * 60 * 24 * 365, httpOnly: false, sameSite: 'lax' });
