@@ -205,3 +205,33 @@ html{ scroll-behavior: smooth; }
   /* On mobile the image sits behind everything — use a full dark scrim */
   .hero::after{ background: linear-gradient(180deg, rgba(5,7,12,.78), rgba(5,7,12,.62)) !important; }
 }
+
+/* ============================================================
+   BRAND LOGO (full logo image in header/footer)
+   ============================================================ */
+.logo-img-only{ gap:0 !important; }
+.logo-img-only img{ display:block; width:auto; box-shadow:none !important; border-radius:0; }
+.site-header .logo-img-only img{ height:44px; }
+@media (max-width:600px){ .site-header .logo-img-only img{ height:38px; } }
+.logo-foot.logo-img-only img{ height:64px; }
+
+/* ============================================================
+   3D HERO SCENE
+   ============================================================ */
+.hero-3d-canvas{
+  position:absolute; inset:0; width:100%; height:100%;
+  z-index:2; opacity:0; transition:opacity 1.2s ease;
+  pointer-events:none; display:block;
+}
+.hero.has-3d .hero-3d-canvas{ opacity:1; }
+/* When 3D is active, dim the static bg image so the canvas is the star */
+.hero.has-3d::before{ opacity:.25; }
+.hero.has-3d::after{ background: linear-gradient(90deg,#05070c 4%, rgba(5,7,12,.75) 38%, rgba(5,7,12,.2) 66%, transparent 80%) !important; }
+/* keep text above canvas */
+.hero .wrap{ position:relative; z-index:3; }
+/* On 3D, push the visual column so the phone shows on the right */
+.hero.has-3d .hero-visual{ visibility:hidden; }
+@media (max-width:980px){
+  /* On mobile we don't run 3D; nothing extra needed */
+  .hero.has-3d .hero-visual{ visibility:visible; }
+}
