@@ -125,6 +125,11 @@ function seedSettings() {
     warranty_info: '12-month warranty on phones and devices. 3-month warranty on accessories where applicable.',
     return_policy: '7-day returns/exchanges on unused items in original packaging. Defective items covered by warranty.',
     ga_id: config.analytics.gaId,
+    // Flash sale (off by default; enable + set an end time from the admin panel)
+    flash_enabled: '0',
+    flash_title: '⚡ Flash Sale — Limited Time Offers',
+    flash_subtitle: 'Grab the best tech deals before the timer runs out!',
+    flash_end: '', // ISO datetime, e.g. 2026-07-10T20:00
   };
   for (const [key, value] of Object.entries(defaults)) {
     db.run(

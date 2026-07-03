@@ -5,6 +5,28 @@
 <%- include('../partials/header') %>
 
 <main>
+  <!-- ============ FLASH SALE COUNTDOWN ============ -->
+  <% if (settings.flash_enabled === '1' && settings.flash_end) { %>
+  <div class="flash-bar" id="flashBar" data-end="<%= settings.flash_end %>">
+    <div class="wrap flash-inner">
+      <div class="flash-text">
+        <span class="flash-title"><%= settings.flash_title %></span>
+        <span class="flash-sub"><%= settings.flash_subtitle %></span>
+      </div>
+      <div class="flash-timer" id="flashTimer" aria-live="polite">
+        <div class="flash-unit"><b id="fd">00</b><small>Days</small></div>
+        <div class="flash-colon">:</div>
+        <div class="flash-unit"><b id="fh">00</b><small>Hrs</small></div>
+        <div class="flash-colon">:</div>
+        <div class="flash-unit"><b id="fm">00</b><small>Min</small></div>
+        <div class="flash-colon">:</div>
+        <div class="flash-unit"><b id="fs">00</b><small>Sec</small></div>
+      </div>
+      <a class="btn btn-gold btn-sm flash-cta" href="/shop">Shop the sale →</a>
+    </div>
+  </div>
+  <% } %>
+
   <!-- ============ HERO ============ -->
   <section class="hero" id="home">
     <div class="wrap hero-grid">
@@ -35,6 +57,26 @@
       </div>
     </div>
   </section>
+
+  <!-- ============ LUXE TRUST MARQUEE ============ -->
+  <div class="luxe-marquee" aria-hidden="true">
+    <div class="luxe-marquee-track">
+      <span>
+        <b>100% <%= t('badge_original') %></b> <i class="sep">✦</i>
+        <b><%= t('badge_delivery') %></b> <i class="sep">✦</i>
+        <b><%= t('badge_cod') %></b> <i class="sep">✦</i>
+        <b><%= t('badge_warranty') %></b> <i class="sep">✦</i>
+        <b><%= t('trust_fast') %></b> <i class="sep">✦</i>
+      </span>
+      <span>
+        <b>100% <%= t('badge_original') %></b> <i class="sep">✦</i>
+        <b><%= t('badge_delivery') %></b> <i class="sep">✦</i>
+        <b><%= t('badge_cod') %></b> <i class="sep">✦</i>
+        <b><%= t('badge_warranty') %></b> <i class="sep">✦</i>
+        <b><%= t('trust_fast') %></b> <i class="sep">✦</i>
+      </span>
+    </div>
+  </div>
 
   <!-- ============ CATEGORIES ============ -->
   <section id="categories">

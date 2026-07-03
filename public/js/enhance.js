@@ -153,3 +153,42 @@
     });
   });
 })();
+
+/* ============================================================
+   FLASH SALE COUNTDOWN
+   ============================================================ */
+(function () {
+  'use strict';
+  var bar = document.getElementById('flashBar');
+  if (!bar) return;
+  var end = new Date(bar.getAttribute('data-end')).getTime();
+  if (isNaN(end)) { bar.style.display = 'none'; return; }
+
+  var fd = document.getElementById('fd'), fh = document.getElementById('fh'),
+      fm = document.getElementById('fm'), fs = document.getElementById('fs');
+
+  function pad(n){ return (n < 10 ? '0' : '') + n; }
+
+  function tick() {
+    var diff = end - Date.now();
+    if (diff <= 0) {
+      // Sale over → hide the banner gracefully
+      bar.classList.add('flash-over');
+      setTimeout(function(){ bar.style.display = 'none'; }, 400);
+      clearInterval(timer);
+      return;
+    }
+    var d = Math.floor(diff / 86400000);
+    var h = Math.floor((diff % 86400000) / 3600000);
+    var m = Math.floor((diff % 3600000) / 60000);
+    var s = Math.floor((diff % 60000) / 1000);
+    if (fd) fd.textContent = pad(d);
+    if (fh) fh.textContent = pad(h);
+    if (fm) fm.textContent = pad(m);
+    if (fs) fs.textContent = pad(s);
+    // urgency: pulse red in the final hour
+    if (diff < 3600000) bar.classList.add('flash-urgent');
+  }
+  tick();
+  var timer = setInterval(tick, 1000);
+})();

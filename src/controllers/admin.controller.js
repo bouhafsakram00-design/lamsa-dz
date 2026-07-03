@@ -166,10 +166,14 @@ function saveSettings(req, res) {
   const keys = [
     'store_name', 'whatsapp_number', 'store_address', 'store_email', 'store_phone',
     'store_hours', 'delivery_info', 'warranty_info', 'return_policy', 'ga_id',
+    'flash_enabled', 'flash_title', 'flash_subtitle', 'flash_end',
   ];
   keys.forEach((k) => {
+    if (k === 'flash_enabled') return; // handled explicitly below (checkbox)
     if (req.body[k] != null) content.settings.set(k, String(req.body[k]).trim());
   });
+  // Checkbox: present in body only when ticked
+  content.settings.set('flash_enabled', req.body.flash_enabled ? '1' : '0');
   res.redirect('/admin/settings?saved=1');
 }
 

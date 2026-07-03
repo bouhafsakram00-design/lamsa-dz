@@ -21,6 +21,17 @@
     <div class="panel"><div class="panel-head"><h2>Analytics</h2></div><div class="panel-body">
       <div class="form-row"><label>Google Analytics 4 ID (G-XXXX) — optional</label><input name="ga_id" value="<%= settings.ga_id||'' %>" placeholder="G-XXXXXXXXXX"></div>
     </div></div>
+    <div class="panel"><div class="panel-head"><h2>⚡ Flash Sale Countdown</h2></div><div class="panel-body">
+      <label class="form-check" style="margin-bottom:14px"><input type="checkbox" name="flash_enabled" <%= settings.flash_enabled==='1'?'checked':'' %>> Show flash-sale banner on the homepage</label>
+      <div class="form-row"><label>Banner title</label><input name="flash_title" value="<%= settings.flash_title||'' %>" placeholder="⚡ Flash Sale — Limited Time Offers"></div>
+      <div class="form-row" style="margin-top:12px"><label>Subtitle</label><input name="flash_subtitle" value="<%= settings.flash_subtitle||'' %>" placeholder="Grab the best deals before the timer runs out!"></div>
+      <div class="form-row" style="margin-top:12px">
+        <label>Countdown ends at (your local time)</label>
+        <input type="datetime-local" name="flash_end" value="<%= settings.flash_end||'' %>">
+        <small class="muted" style="margin-top:4px">Pick a date & time. When it passes, the banner hides automatically.</small>
+      </div>
+    </div></div>
+
     <div class="form-actions"><button class="btn btn-primary">Save settings</button></div>
   </form>
 <%- include('./_layout-close') %>
