@@ -1,0 +1,44 @@
+<%- include('./_layout-open') %>
+  <div class="admin-head"><div><h1>Orders</h1><p class="sub"><%= result.total %> total orders</p></div></div>
+
+  <!-- Status filter tabs -->
+  <div class="status-tabs">
+    <a href="/admin/orders" class="<%= !filters.status?'active':'' %>">All</a>
+    <% statuses.forEach(function(s){ %>
+      <a href="/admin/orders?status=<%= s %>" class="<%= filters.status===s?'active':'' %>"><%= s %> <span class="tab-count"><%= statusCounts[s] %></span></a>
+    <% }); %>
+  </div>
+
+  <form class="toolbar" method="get" action="/admin/orders">
+    <% if (filters.status) { %><input type="hidden" name="status" value="<%= filters.status %>"><% } %>
+    <input class="grow" type="search" name="q" placeholder="Search by reference, name or phone…" value="<%= filters.q %>">
+    <button class="btn btn-ghost">Search</button>
+  </form>
+
+  <div class="panel">
+    <table class="table">
+      <thead><tr><th>Reference</th><th>Date</th><th>Customer</th><th>Phone</th><th>Total</th><th>Status</th></tr></thead>
+      <tbody>
+        <% result.items.forEach(function(o){ %>
+          <tr onclick="location.href='/admin/orders/<%= o.id %>'" style="cursor:pointer">
+            <td class="muted"><%= o.reference %></td>
+            <td><%= o.created_at.slice(0,16) %></td>
+            <td><strong><%= o.customer_name || '—' %></strong></td>
+            <td><%= o.customer_phone || '—' %></td>
+            <td><strong><%= helpers.formatDA(o.total) %></strong></td>
+            <td><span class="pill st-<%= o.status %>"><%= o.status %></span></td>
+          </tr>
+        <% }); %>
+        <% if (!result.items.length) { %><tr><td colspan="6" class="muted" style="text-align:center;padding:30px">No orders found.</td></tr><% } %>
+      </tbody>
+    </table>
+  </div>
+
+  <% if (result.pages > 1) { %>
+    <div class="toolbar" style="justify-content:center">
+      <% for(var pg=1; pg<=result.pages; pg++){ %>
+        <a class="btn <%= result.page===pg?'btn-primary':'btn-ghost' %> btn-sm" href="/admin/orders?page=<%= pg %>&status=<%= filters.status %>&q=<%= filters.q %>"><%= pg %></a>
+      <% } %>
+    </div>
+  <% } %>
+<%- include('./_layout-close') %>

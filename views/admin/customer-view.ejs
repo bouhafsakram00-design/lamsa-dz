@@ -1,0 +1,35 @@
+<%- include('./_layout-open') %>
+  <div class="admin-head">
+    <div><h1><%= customer.name %></h1><p class="sub">Customer since <%= customer.created_at.slice(0,10) %></p></div>
+    <a href="/admin/customers" class="btn btn-ghost">← Back</a>
+  </div>
+  <div class="stat-grid">
+    <div class="stat-card"><div class="val"><%= customer.orders.length %></div><div class="lbl">Orders</div></div>
+    <div class="stat-card"><div class="val"><%= helpers.formatDA(customer.spent) %></div><div class="lbl">Total spent</div></div>
+    <div class="stat-card"><div class="val"><%= customer.wishlist.length %></div><div class="lbl">Wishlist items</div></div>
+  </div>
+  <div class="two-col">
+    <div class="panel"><div class="panel-head"><h2>Order history</h2></div>
+      <table class="table"><thead><tr><th>Ref</th><th>Date</th><th>Total</th><th>Status</th></tr></thead><tbody>
+        <% customer.orders.forEach(function(o){ %>
+          <tr onclick="location.href='/admin/orders/<%= o.id %>'" style="cursor:pointer"><td class="muted"><%= o.reference %></td><td><%= o.created_at.slice(0,10) %></td><td><strong><%= helpers.formatDA(o.total) %></strong></td><td><span class="pill st-<%= o.status %>"><%= o.status %></span></td></tr>
+        <% }); %>
+        <% if(!customer.orders.length){ %><tr><td colspan="4" class="muted">No orders yet.</td></tr><% } %>
+      </tbody></table>
+    </div>
+    <div>
+      <div class="panel"><div class="panel-head"><h2>Contact</h2></div><div class="panel-body">
+        <p class="muted"><%= customer.email %></p>
+        <% if (customer.phone) { %><p><%= customer.phone %></p>
+          <a class="btn btn-success btn-sm" style="margin-top:10px" target="_blank" href="https://wa.me/<%= customer.phone.replace(/[^0-9]/g,'') %>">💬 WhatsApp</a>
+        <% } %>
+      </div></div>
+      <div class="panel"><div class="panel-head"><h2>Wishlist</h2></div><div class="panel-body" style="padding:0">
+        <table class="table"><tbody>
+          <% customer.wishlist.forEach(function(w){ %><tr><td><%= w.name_en %></td><td><%= helpers.formatDA(w.price) %></td></tr><% }); %>
+          <% if(!customer.wishlist.length){ %><tr><td class="muted">Empty</td></tr><% } %>
+        </tbody></table>
+      </div></div>
+    </div>
+  </div>
+<%- include('./_layout-close') %>

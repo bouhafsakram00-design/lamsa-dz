@@ -3,12 +3,16 @@ const db = require('../db');
 const productsSvc = require('../services/products.service');
 const content = require('../services/content.service');
 const analytics = require('../services/analytics.service');
+const ordersSvc = require('../services/orders.service');
+const customersSvc = require('../services/customers.service');
+const couponsSvc = require('../services/coupons.service');
 const { processImages } = require('../middleware/upload');
 const { slugify } = require('../utils/helpers');
 
 function adminCommon() {
   return {
     unreadMessages: content.messages.unreadCount(),
+    pendingOrders: ordersSvc.metrics().pending,
     pendingReviews: content.reviews.pending().length,
     lowStockCount: productsSvc.lowStock(100).length,
   };
@@ -17,14 +21,24 @@ function adminCommon() {
 // ---- Dashboard ----
 function dashboard(req, res) {
   const summary = analytics.summary(30);
-  const series = analytics.dailySeries(14);
-  const topProducts = analytics.topProducts(8, 30);
-  const topSearches = analytics.topSearches(10, 30);
+  const traffic = analytics.dailySeries(14);
+  const om = ordersSvc.metrics();
+  const sales = ordersSvc.salesSeries(14);
+  const bestSellers = ordersSvc.bestSellers(5);
+  const recentOrders = ordersSvc.recentOrders(6);
+  const recentCustomers = customersSvc.recent(5);
+  const statusCounts = ordersSvc.statusCounts();
+
+  // Conversion rate = orders / unique visitors (last 30d)
+  const conversion = summary.uniqueVisitors > 0
+    ? Math.round((om.ordersMonth / summary.uniqueVisitors) * 1000) / 10
+    : 0;
+
   const stats = {
     products: db.get('SELECT COUNT(*) c FROM products').c,
     activeProducts: db.get('SELECT COUNT(*) c FROM products WHERE is_active=1').c,
     categories: db.get('SELECT COUNT(*) c FROM categories').c,
-    customers: db.get("SELECT COUNT(*) c FROM users WHERE role='customer'").c,
+    customers: customersSvc.count(),
     reviews: db.get('SELECT COUNT(*) c FROM reviews WHERE is_approved=1').c,
     subscribers: content.subscribers.count(),
   };
@@ -33,10 +47,86 @@ function dashboard(req, res) {
   res.render('admin/dashboard', {
     layout: false,
     pageTitle: 'Dashboard — LamsaDZ Admin',
-    summary, series, topProducts, topSearches, stats, lowStock,
+    summary, traffic, sales, om, bestSellers, recentOrders, recentCustomers,
+    statusCounts, conversion, stats, lowStock,
+    helpers: require('../utils/helpers'),
     ...adminCommon(),
     active: 'dashboard',
   });
+}
+
+// ================= ORDERS =================
+function orders(req, res) {
+  const result = ordersSvc.list({ status: req.query.status, q: req.query.q, page: req.query.page || 1 });
+  res.render('admin/orders', {
+    layout: false, pageTitle: 'Orders — Admin', result,
+    statuses: ordersSvc.STATUSES, statusCounts: ordersSvc.statusCounts(),
+    filters: { status: req.query.status || '', q: req.query.q || '' },
+    helpers: require('../utils/helpers'), ...adminCommon(), active: 'orders',
+  });
+}
+function orderView(req, res, next) {
+  const order = ordersSvc.byId(Number(req.params.id));
+  if (!order) return next();
+  res.render('admin/order-view', {
+    layout: false, pageTitle: `Order ${order.reference} — Admin`,
+    order, statuses: ordersSvc.STATUSES, settings: content.settings.all(),
+    helpers: require('../utils/helpers'), ...adminCommon(), active: 'orders',
+  });
+}
+function orderUpdateStatus(req, res) {
+  ordersSvc.updateStatus(Number(req.params.id), req.body.status, req.body.note, req.user.id);
+  res.redirect('/admin/orders/' + req.params.id);
+}
+function orderAddNote(req, res) {
+  if (req.body.note) ordersSvc.addNote(Number(req.params.id), req.body.note);
+  res.redirect('/admin/orders/' + req.params.id);
+}
+function orderInvoice(req, res, next) {
+  const order = ordersSvc.byId(Number(req.params.id));
+  if (!order) return next();
+  res.render('admin/invoice', {
+    layout: false, order, settings: content.settings.all(),
+    helpers: require('../utils/helpers'),
+  });
+}
+
+// ================= CUSTOMERS =================
+function customers(req, res) {
+  const result = customersSvc.list({ q: req.query.q, page: req.query.page || 1 });
+  res.render('admin/customers', {
+    layout: false, pageTitle: 'Customers — Admin', result,
+    filters: { q: req.query.q || '' },
+    helpers: require('../utils/helpers'), ...adminCommon(), active: 'customers',
+  });
+}
+function customerView(req, res, next) {
+  const customer = customersSvc.profile(Number(req.params.id));
+  if (!customer) return next();
+  res.render('admin/customer-view', {
+    layout: false, pageTitle: `${customer.name} — Admin`, customer,
+    helpers: require('../utils/helpers'), ...adminCommon(), active: 'customers',
+  });
+}
+
+// ================= COUPONS =================
+function coupons(req, res) {
+  res.render('admin/coupons', {
+    layout: false, pageTitle: 'Coupons — Admin', coupons: couponsSvc.all(),
+    editing: req.query.edit ? couponsSvc.byId(Number(req.query.edit)) : null,
+    saved: req.query.saved === '1',
+    helpers: require('../utils/helpers'), ...adminCommon(), active: 'coupons',
+  });
+}
+function saveCoupon(req, res) {
+  const d = { ...req.body, is_active: req.body.is_active ? 1 : 0 };
+  if (req.params.id) couponsSvc.update(Number(req.params.id), d);
+  else couponsSvc.create(d);
+  res.redirect('/admin/coupons?saved=1');
+}
+function deleteCoupon(req, res) {
+  couponsSvc.remove(Number(req.params.id));
+  res.redirect('/admin/coupons');
 }
 
 // ---- Products list ----
@@ -223,4 +313,7 @@ module.exports = {
   inventory, adjustInventory, reviews, approveReview, deleteReview,
   messages, readMessage, settings, saveSettings, analyticsPage,
   accountPage, changePassword,
+  orders, orderView, orderUpdateStatus, orderAddNote, orderInvoice,
+  customers, customerView,
+  coupons, saveCoupon, deleteCoupon,
 };

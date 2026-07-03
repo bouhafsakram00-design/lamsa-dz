@@ -21,6 +21,15 @@ router.get('/reviews', admin.reviews);
 router.get('/messages', admin.messages);
 router.get('/settings', admin.settings);
 router.get('/account', admin.accountPage);
+// Orders
+router.get('/orders', admin.orders);
+router.get('/orders/:id', admin.orderView);
+router.get('/orders/:id/invoice', admin.orderInvoice);
+// Customers
+router.get('/customers', admin.customers);
+router.get('/customers/:id', admin.customerView);
+// Coupons
+router.get('/coupons', admin.coupons);
 
 // ---- Product create/update (multipart): multer FIRST, then CSRF verify, then validate ----
 router.post('/products', upload.array('images', 6), verifyToken, v.productRules, v.handleValidation, admin.saveProduct);
@@ -35,5 +44,12 @@ router.post('/reviews/:id/delete', verifyToken, admin.deleteReview);
 router.post('/messages/:id/read', verifyToken, admin.readMessage);
 router.post('/settings', verifyToken, admin.saveSettings);
 router.post('/account/password', verifyToken, admin.changePassword);
+// Orders
+router.post('/orders/:id/status', verifyToken, admin.orderUpdateStatus);
+router.post('/orders/:id/note', verifyToken, admin.orderAddNote);
+// Coupons
+router.post('/coupons', verifyToken, admin.saveCoupon);
+router.post('/coupons/:id', verifyToken, admin.saveCoupon);
+router.post('/coupons/:id/delete', verifyToken, admin.deleteCoupon);
 
 module.exports = router;

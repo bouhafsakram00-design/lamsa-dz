@@ -1,0 +1,44 @@
+<%- include('./_layout-open') %>
+  <div class="admin-head"><div><h1>Coupons</h1><p class="sub">Discounts & promotions</p></div></div>
+  <% if (saved) { %><div class="alert alert-success">Coupon saved.</div><% } %>
+  <div class="two-col">
+    <div class="panel">
+      <table class="table">
+        <thead><tr><th>Code</th><th>Type</th><th>Value</th><th>Used</th><th>Status</th><th></th></tr></thead>
+        <tbody>
+          <% coupons.forEach(function(c){ %>
+            <tr>
+              <td><strong><%= c.code %></strong></td>
+              <td><%= c.type %></td>
+              <td><%= c.type==='percent' ? c.value+'%' : (c.type==='fixed' ? helpers.formatDA(c.value) : 'Free ship') %></td>
+              <td><%= c.used_count %><%= c.usage_limit ? '/'+c.usage_limit : '' %></td>
+              <td><span class="pill <%= c.is_active?'pill-in':'pill-off' %>"><%= c.is_active?'Active':'Off' %></span></td>
+              <td style="white-space:nowrap">
+                <a href="/admin/coupons?edit=<%= c.id %>" class="btn btn-ghost btn-sm">Edit</a>
+                <form method="post" action="/admin/coupons/<%= c.id %>/delete" style="display:inline" onsubmit="return confirm('Delete?')"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button class="btn btn-danger btn-sm">×</button></form>
+              </td>
+            </tr>
+          <% }); %>
+          <% if(!coupons.length){ %><tr><td colspan="6" class="muted" style="text-align:center;padding:24px">No coupons yet. Create one →</td></tr><% } %>
+        </tbody>
+      </table>
+    </div>
+    <div class="panel"><div class="panel-head"><h2><%= editing ? 'Edit coupon' : 'New coupon' %></h2></div><div class="panel-body">
+      <form method="post" action="/admin/coupons<%= editing ? '/'+editing.id : '' %>">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <div class="form-row"><label>Code</label><input name="code" value="<%= editing?editing.code:'' %>" required placeholder="WELCOME10" style="text-transform:uppercase"></div>
+        <div class="form-row" style="margin-top:10px"><label>Type</label><select name="type">
+          <option value="percent" <%= editing&&editing.type==='percent'?'selected':'' %>>Percentage %</option>
+          <option value="fixed" <%= editing&&editing.type==='fixed'?'selected':'' %>>Fixed amount (DA)</option>
+          <option value="free_shipping" <%= editing&&editing.type==='free_shipping'?'selected':'' %>>Free shipping</option>
+        </select></div>
+        <div class="form-row" style="margin-top:10px"><label>Value (% or DA)</label><input type="number" name="value" value="<%= editing?editing.value:'' %>" min="0"></div>
+        <div class="form-row" style="margin-top:10px"><label>Min. order (DA)</label><input type="number" name="min_subtotal" value="<%= editing?editing.min_subtotal:0 %>" min="0"></div>
+        <div class="form-row" style="margin-top:10px"><label>Expires at</label><input type="datetime-local" name="expires_at" value="<%= editing&&editing.expires_at?editing.expires_at:'' %>"></div>
+        <div class="form-row" style="margin-top:10px"><label>Usage limit (blank = unlimited)</label><input type="number" name="usage_limit" value="<%= editing&&editing.usage_limit?editing.usage_limit:'' %>" min="1"></div>
+        <label class="form-check" style="margin-top:12px"><input type="checkbox" name="is_active" <%= !editing || editing.is_active ? 'checked':'' %>> Active</label>
+        <div class="form-actions"><button class="btn btn-primary"><%= editing?'Save':'Create coupon' %></button><% if(editing){ %><a href="/admin/coupons" class="btn btn-ghost">Cancel</a><% } %></div>
+      </form>
+    </div></div>
+  </div>
+<%- include('./_layout-close') %>

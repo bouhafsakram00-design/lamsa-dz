@@ -1,0 +1,75 @@
+<%- include('./_layout-open') %>
+  <div class="admin-head">
+    <div><h1>Order <%= order.reference %></h1><p class="sub"><%= order.created_at.slice(0,16) %> · <span class="pill st-<%= order.status %>"><%= order.status %></span></p></div>
+    <div style="display:flex;gap:8px">
+      <a href="/admin/orders/<%= order.id %>/invoice" target="_blank" class="btn btn-ghost">🖨️ Invoice</a>
+      <a href="/admin/orders" class="btn btn-ghost">← Back</a>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="panel"><div class="panel-head"><h2>Items</h2></div>
+        <table class="table">
+          <thead><tr><th>Product</th><th>Price</th><th>Qty</th><th>Subtotal</th></tr></thead>
+          <tbody>
+            <% order.items.forEach(function(it){ %>
+              <tr><td><%= it.name %></td><td><%= helpers.formatDA(it.unit_price) %></td><td><%= it.qty %></td><td><strong><%= helpers.formatDA(it.unit_price*it.qty) %></strong></td></tr>
+            <% }); %>
+          </tbody>
+        </table>
+        <div class="panel-body">
+          <div class="order-totals">
+            <div><span>Subtotal</span><span><%= helpers.formatDA(order.subtotal) %></span></div>
+            <% if (order.discount) { %><div class="disc"><span>Discount <% if(order.coupon_code){ %>(<%= order.coupon_code %>)<% } %></span><span>−<%= helpers.formatDA(order.discount) %></span></div><% } %>
+            <div><span>Shipping</span><span><%= order.shipping ? helpers.formatDA(order.shipping) : 'Free' %></span></div>
+            <div class="grand"><span>Total</span><span><%= helpers.formatDA(order.total) %></span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel"><div class="panel-head"><h2>Status history</h2></div>
+        <div class="panel-body">
+          <ul class="timeline">
+            <% order.history.forEach(function(h){ %>
+              <li><span class="pill st-<%= h.status %>"><%= h.status %></span> <span class="muted"><%= h.created_at.slice(0,16) %></span><% if(h.note){ %><div class="tl-note"><%= h.note %></div><% } %></li>
+            <% }); %>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="panel"><div class="panel-head"><h2>Customer</h2></div><div class="panel-body">
+        <p><strong><%= order.customer_name || '—' %></strong></p>
+        <p class="muted"><%= order.customer_phone || '' %></p>
+        <% if (order.email) { %><p class="muted"><%= order.email %></p><% } %>
+        <% if (order.wilaya || order.address) { %><p style="margin-top:8px"><%= order.wilaya %><br><%= order.address %></p><% } %>
+        <% if (order.customer_phone) { %>
+          <a class="btn btn-success btn-sm" style="margin-top:10px" target="_blank"
+             href="https://wa.me/<%= order.customer_phone.replace(/[^0-9]/g,'') %>?text=<%= encodeURIComponent('Hi '+(order.customer_name||'')+', regarding your order '+order.reference) %>">💬 WhatsApp customer</a>
+        <% } %>
+      </div></div>
+
+      <div class="panel"><div class="panel-head"><h2>Update status</h2></div><div class="panel-body">
+        <form method="post" action="/admin/orders/<%= order.id %>/status">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <div class="form-row"><select name="status">
+            <% statuses.forEach(function(s){ %><option value="<%= s %>" <%= order.status===s?'selected':'' %>><%= s %></option><% }); %>
+          </select></div>
+          <div class="form-row" style="margin-top:10px"><input name="note" placeholder="Note (optional)"></div>
+          <button class="btn btn-primary" style="margin-top:12px">Update</button>
+        </form>
+      </div></div>
+
+      <div class="panel"><div class="panel-head"><h2>Internal notes</h2></div><div class="panel-body">
+        <% if (order.notes) { %><pre class="notes"><%= order.notes %></pre><% } %>
+        <form method="post" action="/admin/orders/<%= order.id %>/note">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <textarea name="note" rows="2" placeholder="Add a note…" style="width:100%;border:1px solid var(--line);border-radius:8px;padding:8px"></textarea>
+          <button class="btn btn-ghost btn-sm" style="margin-top:8px">Add note</button>
+        </form>
+      </div></div>
+    </div>
+  </div>
+<%- include('./_layout-close') %>

@@ -1,56 +1,62 @@
 <%- include('./_layout-open') %>
   <div class="admin-head">
-    <div><h1>Dashboard</h1><p class="sub">Last 30 days overview</p></div>
+    <div><h1>Dashboard</h1><p class="sub">Business overview · last 30 days</p></div>
     <a href="/admin/products/new" class="btn btn-primary">+ Add product</a>
   </div>
 
-  <!-- Key stats -->
+  <!-- Primary revenue/orders KPIs -->
   <div class="stat-grid">
-    <div class="stat-card"><span class="ic">👁️</span><div class="val"><%= summary.pageview %></div><div class="lbl">Page views</div></div>
-    <div class="stat-card"><span class="ic">🙋</span><div class="val"><%= summary.uniqueVisitors %></div><div class="lbl">Unique visitors</div></div>
-    <div class="stat-card"><span class="ic">💬</span><div class="val"><%= summary.whatsapp_click %></div><div class="lbl">WhatsApp clicks</div></div>
-    <div class="stat-card"><span class="ic">🛒</span><div class="val"><%= summary.product_click %></div><div class="lbl">Product clicks</div></div>
-    <div class="stat-card"><span class="ic">🔎</span><div class="val"><%= summary.search %></div><div class="lbl">Searches</div></div>
+    <div class="stat-card kpi-hero"><span class="ic">💰</span><div class="val"><%= helpers.formatDA(om.revenue) %></div><div class="lbl">Total revenue</div></div>
+    <div class="stat-card"><span class="ic">📅</span><div class="val"><%= helpers.formatDA(om.revenueMonth) %></div><div class="lbl">Revenue this month</div></div>
+    <div class="stat-card"><span class="ic">🧾</span><div class="val"><%= om.ordersToday %></div><div class="lbl">Orders today</div></div>
+    <div class="stat-card"><span class="ic">🗓️</span><div class="val"><%= om.ordersMonth %></div><div class="lbl">Orders this month</div></div>
+    <div class="stat-card"><span class="ic">📈</span><div class="val"><%= conversion %>%</div><div class="lbl">Conversion rate</div></div>
   </div>
 
   <div class="stat-grid">
-    <div class="stat-card"><div class="val"><%= stats.activeProducts %>/<%= stats.products %></div><div class="lbl">Active products</div></div>
-    <div class="stat-card"><div class="val"><%= stats.categories %></div><div class="lbl">Categories</div></div>
-    <div class="stat-card"><div class="val"><%= stats.customers %></div><div class="lbl">Customers</div></div>
-    <div class="stat-card"><div class="val"><%= stats.reviews %></div><div class="lbl">Approved reviews</div></div>
-    <div class="stat-card"><div class="val"><%= stats.subscribers %></div><div class="lbl">Subscribers</div></div>
+    <div class="stat-card"><span class="ic">⏳</span><div class="val"><%= om.pending %></div><div class="lbl">Pending orders</div></div>
+    <div class="stat-card"><span class="ic">✅</span><div class="val"><%= om.completed %></div><div class="lbl">Completed orders</div></div>
+    <div class="stat-card"><span class="ic">📦</span><div class="val"><%= om.productsSold %></div><div class="lbl">Products sold</div></div>
+    <div class="stat-card"><span class="ic">👁️</span><div class="val"><%= summary.pageview %></div><div class="lbl">Website visitors</div></div>
+    <div class="stat-card"><span class="ic">👥</span><div class="val"><%= stats.customers %></div><div class="lbl">Customers</div></div>
   </div>
 
   <div class="two-col">
     <div>
-      <!-- Traffic chart -->
+      <!-- Sales trend chart -->
       <div class="panel">
-        <div class="panel-head"><h2>Traffic — last 14 days</h2></div>
+        <div class="panel-head"><h2>Sales trend — 14 days</h2></div>
         <div class="panel-body">
-          <% var maxV = Math.max(1, ...series.map(function(s){return Math.max(s.views, s.wa);})); %>
+          <% var maxR = Math.max(1, ...sales.map(function(s){return s.revenue;})); %>
           <div class="chart">
-            <% series.forEach(function(s){ %>
-              <div class="bar-wrap" title="<%= s.day %>: <%= s.views %> views, <%= s.wa %> WA">
-                <div class="bar" style="height:<%= Math.round((s.views/maxV)*100) %>%"></div>
-                <div class="bar wa" style="height:<%= Math.round((s.wa/maxV)*100) %>%"></div>
+            <% if (!sales.length) { %><p class="muted">No orders yet. Once customers order, sales appear here.</p><% } %>
+            <% sales.forEach(function(s){ %>
+              <div class="bar-wrap" title="<%= s.day %>: <%= helpers.formatDA(s.revenue) %> (<%= s.orders %> orders)">
+                <div class="bar" style="height:<%= Math.round((s.revenue/maxR)*100) %>%"></div>
                 <span class="bl"><%= s.day.slice(5) %></span>
               </div>
             <% }); %>
-            <% if (!series.length) { %><p class="muted">No data yet — visit your store to generate traffic.</p><% } %>
           </div>
-          <div class="chart-legend"><span><span class="dot" style="background:var(--gold)"></span>Views</span><span><span class="dot" style="background:#059669"></span>WhatsApp</span></div>
+          <div class="chart-legend"><span><span class="dot" style="background:var(--gold)"></span>Revenue (DA)</span></div>
         </div>
       </div>
 
-      <!-- Top products -->
+      <!-- Recent orders -->
       <div class="panel">
-        <div class="panel-head"><h2>Top products (by clicks)</h2></div>
+        <div class="panel-head"><h2>Recent orders</h2><a href="/admin/orders" class="btn btn-ghost btn-sm">View all</a></div>
         <div class="panel-body" style="padding:0">
           <table class="table">
-            <thead><tr><th>Product</th><th>Clicks</th></tr></thead>
+            <thead><tr><th>Ref</th><th>Customer</th><th>Total</th><th>Status</th></tr></thead>
             <tbody>
-              <% topProducts.forEach(function(p){ %><tr><td><a href="/product/<%= p.slug %>" target="_blank"><%= p.name_en %></a></td><td><%= p.clicks %></td></tr><% }); %>
-              <% if (!topProducts.length) { %><tr><td colspan="2" class="muted">No clicks tracked yet.</td></tr><% } %>
+              <% recentOrders.forEach(function(o){ %>
+                <tr onclick="location.href='/admin/orders/<%= o.id %>'" style="cursor:pointer">
+                  <td class="muted"><%= o.reference %></td>
+                  <td><%= o.customer_name || '—' %></td>
+                  <td><strong><%= helpers.formatDA(o.total) %></strong></td>
+                  <td><span class="pill st-<%= o.status %>"><%= o.status %></span></td>
+                </tr>
+              <% }); %>
+              <% if (!recentOrders.length) { %><tr><td colspan="4" class="muted">No orders yet.</td></tr><% } %>
             </tbody>
           </table>
         </div>
@@ -58,31 +64,42 @@
     </div>
 
     <div>
-      <!-- Low stock alerts -->
+      <!-- Best sellers -->
       <div class="panel">
-        <div class="panel-head"><h2>⚠️ Low stock</h2><a href="/admin/inventory" class="btn btn-ghost btn-sm">Manage</a></div>
+        <div class="panel-head"><h2>🏆 Best sellers</h2></div>
         <div class="panel-body" style="padding:0">
-          <table class="table">
-            <tbody>
-              <% lowStock.forEach(function(p){ %>
-                <tr><td><%= p.name_en %></td><td><span class="pill <%= p.stock===0?'pill-out':'pill-low' %>"><%= p.stock %></span></td></tr>
-              <% }); %>
-              <% if (!lowStock.length) { %><tr><td class="muted">All stocked up ✅</td></tr><% } %>
-            </tbody>
-          </table>
+          <table class="table"><tbody>
+            <% bestSellers.forEach(function(p){ %>
+              <tr><td><% if(p.image){ %><img class="thumb" src="<%= p.image %>"><% } %></td><td><%= p.name_en %></td><td><strong><%= p.sold_count %></strong> sold</td></tr>
+            <% }); %>
+            <% if (!bestSellers.length) { %><tr><td class="muted">No sales data yet.</td></tr><% } %>
+          </tbody></table>
         </div>
       </div>
 
-      <!-- Top searches -->
+      <!-- Low stock -->
       <div class="panel">
-        <div class="panel-head"><h2>Top searches</h2></div>
+        <div class="panel-head"><h2>⚠️ Low stock</h2><a href="/admin/inventory" class="btn btn-ghost btn-sm">Manage</a></div>
         <div class="panel-body" style="padding:0">
-          <table class="table">
-            <tbody>
-              <% topSearches.forEach(function(s){ %><tr><td><%= s.query %></td><td><%= s.c %></td></tr><% }); %>
-              <% if (!topSearches.length) { %><tr><td class="muted">No searches yet.</td></tr><% } %>
-            </tbody>
-          </table>
+          <table class="table"><tbody>
+            <% lowStock.forEach(function(p){ %>
+              <tr><td><%= p.name_en %></td><td><span class="pill <%= p.stock===0?'pill-out':'pill-low' %>"><%= p.stock %></span></td></tr>
+            <% }); %>
+            <% if (!lowStock.length) { %><tr><td class="muted">All stocked up ✅</td></tr><% } %>
+          </tbody></table>
+        </div>
+      </div>
+
+      <!-- Recent customers -->
+      <div class="panel">
+        <div class="panel-head"><h2>Recent customers</h2><a href="/admin/customers" class="btn btn-ghost btn-sm">View all</a></div>
+        <div class="panel-body" style="padding:0">
+          <table class="table"><tbody>
+            <% recentCustomers.forEach(function(c){ %>
+              <tr onclick="location.href='/admin/customers/<%= c.id %>'" style="cursor:pointer"><td><%= c.name %></td><td class="muted"><%= c.email %></td></tr>
+            <% }); %>
+            <% if (!recentCustomers.length) { %><tr><td class="muted">No customers yet.</td></tr><% } %>
+          </tbody></table>
         </div>
       </div>
     </div>

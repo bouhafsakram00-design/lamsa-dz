@@ -110,3 +110,38 @@ a{color:inherit;text-decoration:none}
   .form-grid,.two-col{grid-template-columns:1fr}
   .admin-main{padding:18px}
 }
+
+/* ===== Enterprise admin additions ===== */
+.admin-nav-group{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:#64748b;padding:14px 14px 5px;font-weight:700}
+.kpi-hero{background:linear-gradient(135deg,#0f172a,#0F4C81);color:#fff}
+.kpi-hero .lbl{color:rgba(255,255,255,.75)}
+.kpi-hero .ic{filter:none}
+
+/* Order status pills */
+.pill.st-pending{background:#fef3c7;color:#a16207}
+.pill.st-confirmed{background:#dbeafe;color:#1d4ed8}
+.pill.st-processing{background:#e0e7ff;color:#4338ca}
+.pill.st-shipped{background:#cffafe;color:#0e7490}
+.pill.st-delivered{background:#dcfce7;color:#15803d}
+.pill.st-cancelled{background:#fee2e2;color:#b91c1c}
+.pill.st-refunded{background:#f3e8ff;color:#7e22ce}
+
+/* Status tabs */
+.status-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px;border-bottom:1px solid var(--line);padding-bottom:2px}
+.status-tabs a{padding:8px 14px;border-radius:8px 8px 0 0;font-weight:600;font-size:13px;color:var(--ink-soft);text-transform:capitalize;border-bottom:2px solid transparent}
+.status-tabs a:hover{background:#f8fafc}
+.status-tabs a.active{color:var(--gold-dark);border-bottom-color:var(--gold)}
+.tab-count{background:#e2e8f0;color:#475569;font-size:11px;padding:0 6px;border-radius:99px;margin-left:3px}
+
+/* Order totals */
+.order-totals{max-width:320px;margin-left:auto}
+.order-totals div{display:flex;justify-content:space-between;padding:7px 0;font-size:14px}
+.order-totals .disc{color:#16a34a}
+.order-totals .grand{border-top:2px solid var(--line);margin-top:6px;padding-top:12px;font-size:19px;font-weight:800}
+
+/* Timeline */
+.timeline{list-style:none;display:flex;flex-direction:column;gap:14px}
+.timeline li{padding-left:16px;border-left:2px solid var(--line);position:relative}
+.timeline li::before{content:"";position:absolute;left:-6px;top:4px;width:10px;height:10px;border-radius:50%;background:var(--gold)}
+.tl-note{font-size:13px;color:var(--ink-soft);margin-top:3px}
+.notes{background:#f8fafc;border:1px solid var(--line);border-radius:8px;padding:12px;font-size:13px;white-space:pre-wrap;margin-bottom:12px;font-family:inherit}

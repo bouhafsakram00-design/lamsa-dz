@@ -1,0 +1,32 @@
+<%- include('./_layout-open') %>
+  <div class="admin-head"><div><h1>Customers</h1><p class="sub"><%= result.total %> registered customers</p></div></div>
+  <form class="toolbar" method="get" action="/admin/customers">
+    <input class="grow" type="search" name="q" placeholder="Search name, email or phone…" value="<%= filters.q %>">
+    <button class="btn btn-ghost">Search</button>
+  </form>
+  <div class="panel">
+    <table class="table">
+      <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Orders</th><th>Spent</th><th>Joined</th></tr></thead>
+      <tbody>
+        <% result.items.forEach(function(c){ %>
+          <tr onclick="location.href='/admin/customers/<%= c.id %>'" style="cursor:pointer">
+            <td><strong><%= c.name %></strong></td>
+            <td class="muted"><%= c.email %></td>
+            <td><%= c.phone || '—' %></td>
+            <td><%= c.order_count %></td>
+            <td><strong><%= helpers.formatDA(c.spent) %></strong></td>
+            <td class="muted"><%= c.created_at.slice(0,10) %></td>
+          </tr>
+        <% }); %>
+        <% if (!result.items.length) { %><tr><td colspan="6" class="muted" style="text-align:center;padding:30px">No customers yet.</td></tr><% } %>
+      </tbody>
+    </table>
+  </div>
+  <% if (result.pages > 1) { %>
+    <div class="toolbar" style="justify-content:center">
+      <% for(var pg=1; pg<=result.pages; pg++){ %>
+        <a class="btn <%= result.page===pg?'btn-primary':'btn-ghost' %> btn-sm" href="/admin/customers?page=<%= pg %>&q=<%= filters.q %>"><%= pg %></a>
+      <% } %>
+    </div>
+  <% } %>
+<%- include('./_layout-close') %>

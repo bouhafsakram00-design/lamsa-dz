@@ -88,9 +88,12 @@ function seedServices() {
 }
 
 function seedTestimonials() {
+  // First-run only: don't wipe admin-edited testimonials on later boots.
+  if (db.get('SELECT COUNT(*) c FROM testimonials').c > 0) {
+    logger.info('Testimonials already present — skipping (preserving your edits)');
+    return;
+  }
   const items = load('testimonials.json');
-  // Clear & reinsert to keep order/content authoritative
-  db.run('DELETE FROM testimonials');
   items.forEach((t, i) => {
     db.run(
       `INSERT INTO testimonials (author_name,location,rating,body_en,body_fr,body_ar,sort_order)
@@ -102,8 +105,12 @@ function seedTestimonials() {
 }
 
 function seedFaqs() {
+  // First-run only: preserve admin-edited FAQs on later boots.
+  if (db.get('SELECT COUNT(*) c FROM faqs').c > 0) {
+    logger.info('FAQs already present — skipping (preserving your edits)');
+    return;
+  }
   const items = load('faqs.json');
-  db.run('DELETE FROM faqs');
   items.forEach((f, i) => {
     db.run(
       `INSERT INTO faqs (q_en,q_fr,q_ar,a_en,a_fr,a_ar,sort_order) VALUES (?,?,?,?,?,?,?)`,

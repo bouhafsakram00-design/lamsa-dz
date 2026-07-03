@@ -20,6 +20,33 @@ function ensureMigrationsTable() {
   `);
 }
 
+/** Add a column only if it doesn't already exist (SQLite-safe). */
+function ensureColumn(table, column, definition) {
+  const cols = db.all(`PRAGMA table_info(${table})`).map((c) => c.name);
+  if (!cols.includes(column)) {
+    db.run(`ALTER TABLE ${table} ADD COLUMN ${column} ${definition}`);
+    logger.info(`  + column ${table}.${column}`);
+  }
+}
+
+/** Idempotent column additions for enterprise features. */
+function ensureColumns() {
+  // Products: brand, bestseller, discount handled by old_price already, specs, video
+  ensureColumn('products', 'brand', 'TEXT');
+  ensureColumn('products', 'is_bestseller', 'INTEGER NOT NULL DEFAULT 0');
+  ensureColumn('products', 'specs', 'TEXT');            // JSON string of key/value specs
+  ensureColumn('products', 'video_url', 'TEXT');
+  ensureColumn('products', 'supplier_id', 'INTEGER');
+  ensureColumn('products', 'cost_price', 'INTEGER');    // for profit calc
+  ensureColumn('products', 'sold_count', 'INTEGER NOT NULL DEFAULT 0');
+  // Orders: richer workflow
+  ensureColumn('orders', 'email', 'TEXT');
+  ensureColumn('orders', 'coupon_code', 'TEXT');
+  ensureColumn('orders', 'discount', 'INTEGER NOT NULL DEFAULT 0');
+  ensureColumn('orders', 'shipping', 'INTEGER NOT NULL DEFAULT 0');
+  ensureColumn('orders', 'total', 'INTEGER NOT NULL DEFAULT 0');
+}
+
 function run() {
   ensureMigrationsTable();
   const files = fs
@@ -44,6 +71,9 @@ function run() {
     count += 1;
     logger.info(`✓ applied: ${file}`);
   }
+
+  // Always run idempotent column checks after file migrations
+  ensureColumns();
 
   logger.info(`Migrations complete. ${count} new migration(s) applied.`);
 }

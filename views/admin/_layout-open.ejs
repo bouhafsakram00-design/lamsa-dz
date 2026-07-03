@@ -17,11 +17,18 @@
     <a href="/admin" class="admin-logo"><img src="/img/logo.png" width="30" height="30" alt=""/> <span>Lamsa<b>DZ</b> Admin</span></a>
     <nav class="admin-nav">
       <a href="/admin" class="<%= active==='dashboard'?'active':'' %>">📊 Dashboard</a>
+      <div class="admin-nav-group">Sell</div>
+      <a href="/admin/orders" class="<%= active==='orders'?'active':'' %>">🧾 Orders <% if (typeof pendingOrders!=='undefined' && pendingOrders) { %><span class="badge"><%= pendingOrders %></span><% } %></a>
       <a href="/admin/products" class="<%= active==='products'?'active':'' %>">📦 Products</a>
       <a href="/admin/inventory" class="<%= active==='inventory'?'active':'' %>">🏷️ Inventory <% if (lowStockCount) { %><span class="badge"><%= lowStockCount %></span><% } %></a>
+      <a href="/admin/coupons" class="<%= active==='coupons'?'active':'' %>">🎟️ Coupons</a>
+      <div class="admin-nav-group">People</div>
+      <a href="/admin/customers" class="<%= active==='customers'?'active':'' %>">👥 Customers</a>
       <a href="/admin/reviews" class="<%= active==='reviews'?'active':'' %>">⭐ Reviews <% if (pendingReviews) { %><span class="badge"><%= pendingReviews %></span><% } %></a>
       <a href="/admin/messages" class="<%= active==='messages'?'active':'' %>">✉️ Messages <% if (unreadMessages) { %><span class="badge"><%= unreadMessages %></span><% } %></a>
+      <div class="admin-nav-group">Insights</div>
       <a href="/admin/analytics" class="<%= active==='analytics'?'active':'' %>">📈 Analytics</a>
+      <div class="admin-nav-group">System</div>
       <a href="/admin/settings" class="<%= active==='settings'?'active':'' %>">⚙️ Settings</a>
       <a href="/admin/account" class="<%= active==='account'?'active':'' %>">🔐 My Account</a>
     </nav>
