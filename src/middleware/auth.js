@@ -27,8 +27,18 @@ function requireAuth(req, res, next) {
 
 /** Requires an admin (or manager) role. */
 function requireAdmin(req, res, next) {
-  if (!req.user || !['admin', 'manager'].includes(req.user.role)) {
-    if (req.accepts('html')) return res.status(403).render('pages/error', { code: 403, message: 'Access denied' });
+  // Not logged in at all → send them to the login page, then back to /admin.
+  if (!req.user) {
+    if (req.accepts('html')) {
+      return res.redirect('/login?next=' + encodeURIComponent(req.originalUrl));
+    }
+    return res.status(401).json({ error: 'Authentication required' });
+  }
+  // Logged in, but not an admin/manager → block with an access-denied page.
+  if (!['admin', 'manager'].includes(req.user.role)) {
+    if (req.accepts('html')) {
+      return res.status(403).render('pages/error', { code: 403, message: 'Access denied' });
+    }
     return res.status(403).json({ error: 'Admin access required' });
   }
   next();
