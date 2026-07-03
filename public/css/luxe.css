@@ -205,12 +205,3 @@ html{ scroll-behavior: smooth; }
   /* On mobile the image sits behind everything — use a full dark scrim */
   .hero::after{ background: linear-gradient(180deg, rgba(5,7,12,.78), rgba(5,7,12,.62)) !important; }
 }
-
-/* ============================================================
-   BRAND LOGO (full logo image in header/footer)
-   ============================================================ */
-.logo-img-only{ gap:0 !important; }
-.logo-img-only img{ display:block; width:auto; box-shadow:none !important; border-radius:0; }
-.site-header .logo-img-only img{ height:44px; }
-@media (max-width:600px){ .site-header .logo-img-only img{ height:38px; } }
-.logo-foot.logo-img-only img{ height:64px; }
